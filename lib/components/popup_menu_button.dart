@@ -9,6 +9,7 @@ import '../style/sf_symbol.dart';
 import '../utils/icon_renderer.dart';
 import '../utils/theme_helper.dart';
 import '../utils/version_detector.dart';
+import 'icon.dart';
 
 /// Base type for entries in a [CNPopupMenuButton] menu.
 abstract class CNPopupMenuEntry {
@@ -820,7 +821,13 @@ class _CNPopupMenuButtonState extends State<CNPopupMenuButton> {
           if (selected != null) widget.onSelected(selected);
         },
         child: widget.isIconButton
-            ? Icon(CupertinoIcons.ellipsis, size: widget.buttonIcon?.size)
+            ? (widget.buttonIcon != null
+                ? CNIcon(
+                    symbol: widget.buttonIcon,
+                    size: widget.buttonIcon!.size,
+                    color: widget.buttonIcon!.color,
+                  )
+                : const SizedBox.shrink())
             : Text(widget.buttonLabel ?? ''),
       ),
     );

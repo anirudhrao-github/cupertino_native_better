@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'
     show TabController, TabBarView, Colors;
-import 'package:cupertino_native_plus/cupertino_native.dart';
+import 'package:cupertino_native_better/cupertino_native_better.dart';
 
 class TabBarDemoPage extends StatefulWidget {
   const TabBarDemoPage({super.key});

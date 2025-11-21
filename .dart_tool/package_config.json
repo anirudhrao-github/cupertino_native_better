@@ -164,7 +164,7 @@
       "languageVersion": "3.5"
     },
     {
-      "name": "cupertino_native_plus",
+      "name": "cupertino_native_better",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.9"

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cupertino_native_plus/cupertino_native_method_channel.dart';
+import 'package:cupertino_native_better/cupertino_native_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

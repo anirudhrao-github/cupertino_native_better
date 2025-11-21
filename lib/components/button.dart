@@ -11,6 +11,7 @@ import '../style/sf_symbol.dart';
 import '../utils/icon_renderer.dart';
 import '../utils/theme_helper.dart';
 import '../utils/version_detector.dart';
+import 'icon.dart';
 
 /// Configuration for CNButton with default values.
 class CNButtonConfig {
@@ -851,22 +852,27 @@ class _CNButtonState extends State<CNButton> {
     // For iOS/macOS < 26, use CupertinoButton with appropriate styling
     Widget? iconWidget;
     if (widget.imageAsset != null) {
-      // Handle image asset - would need to load it, but for now use placeholder
-      iconWidget = Icon(CupertinoIcons.ellipsis, size: widget.imageAsset!.size);
+      // Use CNIcon to properly render the image asset
+      iconWidget = CNIcon(
+        imageAsset: widget.imageAsset,
+        size: widget.imageAsset!.size,
+      );
     } else if (widget.customIcon != null) {
       iconWidget = Icon(widget.customIcon, size: widget.icon?.size ?? 20.0);
     } else if (widget.icon != null) {
-      iconWidget = Icon(
-        CupertinoIcons.ellipsis,
-        size: widget.icon?.size ?? 20.0,
+      // Use CNIcon to properly render SF Symbols (instead of placeholder)
+      iconWidget = CNIcon(
+        symbol: widget.icon,
+        size: widget.icon!.size,
+        color: widget.icon!.color,
       );
     }
 
     Widget child;
-    if (widget.isIcon) {
-      child =
-          iconWidget ??
-          Icon(CupertinoIcons.ellipsis, size: widget.icon?.size ?? 20.0);
+    // Check for icon-only button (has icon but no label)
+    final isIconOnlyButton = widget.isIcon && widget.label == null;
+    if (isIconOnlyButton) {
+      child = iconWidget ?? const SizedBox.shrink();
     } else {
       if (iconWidget != null && widget.label != null) {
         // Handle image placement
@@ -996,18 +1002,27 @@ class _CNButtonState extends State<CNButton> {
     // For non-iOS/macOS, use Material design buttons
     Widget? iconWidget;
     if (widget.imageAsset != null) {
-      // For image assets, we'd need to load them - use placeholder for now
-      iconWidget = Icon(Icons.circle, size: widget.imageAsset!.size);
+      // Use CNIcon for proper rendering
+      iconWidget = CNIcon(
+        imageAsset: widget.imageAsset,
+        size: widget.imageAsset!.size,
+      );
     } else if (widget.customIcon != null) {
       iconWidget = Icon(widget.customIcon, size: widget.icon?.size ?? 20.0);
     } else if (widget.icon != null) {
-      // Use a generic Material icon as placeholder
-      iconWidget = Icon(Icons.circle, size: widget.icon?.size ?? 20.0);
+      // Use CNIcon for SF Symbols
+      iconWidget = CNIcon(
+        symbol: widget.icon,
+        size: widget.icon!.size,
+        color: widget.icon!.color,
+      );
     }
 
     Widget child;
-    if (widget.isIcon) {
-      child = iconWidget ?? Icon(Icons.circle, size: widget.icon?.size ?? 20.0);
+    // Check for icon-only button (has icon but no label)
+    final isIconOnlyButton = widget.isIcon && widget.label == null;
+    if (isIconOnlyButton) {
+      child = iconWidget ?? const SizedBox.shrink();
     } else {
       if (iconWidget != null && widget.label != null) {
         switch (widget.config.imagePlacement) {

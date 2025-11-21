@@ -7,6 +7,7 @@ import '../style/sf_symbol.dart';
 import '../utils/icon_renderer.dart';
 import '../utils/version_detector.dart';
 import '../utils/theme_helper.dart';
+import 'icon.dart';
 
 /// Immutable data describing a single tab bar item.
 class CNTabBarItem {
@@ -181,9 +182,9 @@ class _CNTabBarState extends State<CNTabBar> {
           items: [
             for (final item in widget.items)
               BottomNavigationBarItem(
-                icon: item.customIcon != null
-                    ? Icon(item.customIcon)
-                    : const Icon(CupertinoIcons.circle),
+                // Priority: imageAsset > customIcon > icon (SF Symbol)
+                icon: _buildTabIcon(item, isActive: false),
+                activeIcon: _buildTabIcon(item, isActive: true),
                 label: item.label,
               ),
           ],
@@ -547,5 +548,52 @@ class _CNTabBarState extends State<CNTabBar> {
         if (w != null && w > 0) _intrinsicWidth = w;
       });
     } catch (_) {}
+  }
+
+  /// Builds an icon widget for the tab bar fallback.
+  /// Priority: imageAsset > customIcon > icon (SF Symbol)
+  Widget _buildTabIcon(CNTabBarItem item, {required bool isActive}) {
+    const defaultSize = 25.0;
+
+    // Check for image asset (highest priority)
+    if (isActive && item.activeImageAsset != null) {
+      return CNIcon(
+        imageAsset: item.activeImageAsset,
+        size: item.activeImageAsset!.size,
+      );
+    }
+    if (item.imageAsset != null) {
+      return CNIcon(
+        imageAsset: item.imageAsset,
+        size: item.imageAsset!.size,
+      );
+    }
+
+    // Check for custom icon (medium priority)
+    if (isActive && item.activeCustomIcon != null) {
+      return Icon(item.activeCustomIcon, size: defaultSize);
+    }
+    if (item.customIcon != null) {
+      return Icon(item.customIcon, size: defaultSize);
+    }
+
+    // Check for SF Symbol (lowest priority)
+    if (isActive && item.activeIcon != null) {
+      return CNIcon(
+        symbol: item.activeIcon,
+        size: item.activeIcon!.size,
+        color: item.activeIcon!.color,
+      );
+    }
+    if (item.icon != null) {
+      return CNIcon(
+        symbol: item.icon,
+        size: item.icon!.size,
+        color: item.icon!.color,
+      );
+    }
+
+    // Fallback to empty circle if nothing provided
+    return const Icon(CupertinoIcons.circle, size: defaultSize);
   }
 }

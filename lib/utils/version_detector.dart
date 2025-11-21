@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart';
-import '../cupertino_native_platform_interface.dart';
 
 /// Utility class for checking OS version with caching.
 /// 
@@ -129,9 +128,20 @@ class PlatformVersion {
   }
 
   /// Checks if the platform supports native Liquid Glass effects.
-  /// 
+  ///
   /// This is an alias for [shouldUseNativeGlass] for clarity.
   static bool get supportsLiquidGlass => shouldUseNativeGlass;
+
+  /// Checks if the platform supports native SF Symbol rendering.
+  ///
+  /// SF Symbols are available on iOS 13+ and macOS 11+.
+  /// This always returns true for iOS/macOS regardless of initialization status,
+  /// since SF Symbols are universally supported on modern iOS/macOS versions.
+  ///
+  /// Use this for icon rendering instead of [shouldUseNativeGlass].
+  static bool get supportsSFSymbols {
+    return Platform.isIOS || Platform.isMacOS;
+  }
 
   /// Forces a refresh of the cached version (useful for testing).
   /// 

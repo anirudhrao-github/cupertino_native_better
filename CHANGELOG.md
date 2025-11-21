@@ -1,3 +1,59 @@
+## 1.0.0
+
+**Major Release - Complete iOS Fallback Fixes**
+
+This release addresses critical issues that caused components to malfunction on iOS versions below 26.
+
+### Breaking Changes
+- Package renamed from `cupertino_native_plus` to `cupertino_native_better`
+- Main import changed to `package:cupertino_native_better/cupertino_native_better.dart`
+
+### Bug Fixes
+
+#### CNButton Label Disappearing (iOS < 26)
+- **Fixed**: Buttons with both icon AND label now correctly display both elements in fallback mode
+- **Root Cause**: `widget.isIcon` was returning `true` for any button with an icon, even if it also had a label
+- **Solution**: Changed fallback check to `widget.isIcon && widget.label == null` to only treat truly icon-only buttons as icon-only
+
+#### CNTabBar Icons Not Showing (iOS < 26)
+- **Fixed**: Tab bar icons now render correctly using CNIcon instead of empty placeholder circles
+- **Root Cause**: Fallback code only checked for `customIcon`, ignoring SF Symbols (`icon`/`activeIcon`)
+- **Solution**: Added `_buildTabIcon()` helper that properly handles all icon types with correct priority
+
+#### CNIcon/CNButton/CNPopupMenuButton Showing "..." (iOS < 26)
+- **Fixed**: All CN components now properly render SF Symbols on older iOS versions
+- **Root Cause**: Components were checking `shouldUseNativeGlass` (iOS 26+) for SF Symbol support, but SF Symbols work on iOS 13+
+- **Solution**: Added new `supportsSFSymbols` getter that always returns true on iOS/macOS
+
+### New Features
+- Added `PlatformVersion.supportsSFSymbols` for checking SF Symbol availability (iOS 13+, macOS 11+)
+- Comprehensive dartdoc documentation for all public APIs
+- Full comparison table with other packages in README
+
+### Documentation
+- Complete rewrite of README with feature comparison
+- Migration guide from cupertino_native_plus
+- Comprehensive code examples for all widgets
+
+---
+
+## 0.0.9
+
+* Package preparation for public release
+* Updated repository URLs
+
+## 0.0.8
+
+* Fixed SF Symbol rendering in fallback mode for CNButton
+* Fixed SF Symbol rendering in fallback mode for CNPopupMenuButton
+* Added proper imports for CNIcon in button and popup components
+
+## 0.0.7
+
+* Added `supportsSFSymbols` getter to PlatformVersion
+* SF Symbols now render natively on all iOS versions (13+), not just iOS 26+
+* Separated Liquid Glass support (iOS 26+) from SF Symbol support (iOS 13+)
+
 ## 0.0.6
 
 * **Dark Mode Support for LiquidGlassContainer**: Added automatic dark mode detection and synchronization for LiquidGlassContainer, ensuring the glass effect correctly adapts to Flutter's theme changes
@@ -41,4 +97,9 @@
 
 ## 0.0.1
 
-* Initial release.
+* Initial release
+* Fixed iOS 26+ version detection using Platform.operatingSystemVersion parsing
+* Native Liquid Glass widgets for iOS and macOS
+* Support for CNButton, CNIcon, CNSlider, CNSwitch, CNTabBar, CNPopupMenuButton, CNSegmentedControl
+* Glass effect unioning for grouped buttons
+* LiquidGlassContainer for applying glass effects to any widget

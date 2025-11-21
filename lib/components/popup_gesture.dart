@@ -226,7 +226,7 @@ class _CNPopupMenuOverlay extends StatelessWidget {
                   // TODO: Add SF Symbol rendering support
                   Icon(
                     CupertinoIcons.circle,
-                    size: item.icon!.size ?? 20,
+                    size: item.icon!.size,
                     color: item.enabled
                         ? CupertinoTheme.of(context).primaryColor
                         : CupertinoColors.inactiveGray,
