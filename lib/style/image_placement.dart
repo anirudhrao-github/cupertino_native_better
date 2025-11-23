@@ -12,4 +12,3 @@ enum CNImagePlacement {
   /// Image placed below the text.
   bottom,
 }
-

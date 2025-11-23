@@ -131,9 +131,7 @@ class _CNSliderState extends State<CNSlider> {
   // - Track: use explicit trackColor, otherwise widget.color, otherwise theme primaryColor.
   // - Thumb: only use explicit thumbColor; otherwise keep the native default.
   Color? get _effectiveTrackTint =>
-      widget.trackColor ??
-      widget.color ??
-      ThemeHelper.getPrimaryColor(context);
+      widget.trackColor ?? widget.color ?? ThemeHelper.getPrimaryColor(context);
   Color? get _effectiveThumbTint => widget.thumbColor;
   Color? get _effectiveTrackBgTint => widget.trackBackgroundColor;
 
@@ -160,26 +158,28 @@ class _CNSliderState extends State<CNSlider> {
   @override
   Widget build(BuildContext context) {
     // Check if we should use native platform view
-    final isIOSOrMacOS = defaultTargetPlatform == TargetPlatform.iOS ||
+    final isIOSOrMacOS =
+        defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
-    final shouldUseNative = isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
+    final shouldUseNative =
+        isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
 
     // Fallback to Flutter widgets for non-iOS/macOS or iOS/macOS < 26
     if (!shouldUseNative) {
       // For non-iOS/macOS, use Material Slider
       if (!isIOSOrMacOS) {
-      return SizedBox(
-        height: widget.height,
-        width: double.infinity,
-        child: Slider(
-          value: widget.value.clamp(widget.min, widget.max).toDouble(),
-          min: widget.min,
-          max: widget.max,
-          onChanged: widget.enabled ? widget.onChanged : null,
+        return SizedBox(
+          height: widget.height,
+          width: double.infinity,
+          child: Slider(
+            value: widget.value.clamp(widget.min, widget.max).toDouble(),
+            min: widget.min,
+            max: widget.max,
+            onChanged: widget.enabled ? widget.onChanged : null,
           ),
         );
       }
-      
+
       // For iOS/macOS < 26, use CupertinoSlider
       return SizedBox(
         height: widget.height,

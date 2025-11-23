@@ -105,9 +105,11 @@ class _CNSegmentedControlState extends State<CNSegmentedControl> {
   @override
   Widget build(BuildContext context) {
     // Check if we should use native platform view
-    final isIOSOrMacOS = defaultTargetPlatform == TargetPlatform.iOS ||
+    final isIOSOrMacOS =
+        defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
-    final shouldUseNative = isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
+    final shouldUseNative =
+        isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
 
     // Fallback to Flutter widgets for non-iOS/macOS or iOS/macOS < 26
     if (!shouldUseNative) {

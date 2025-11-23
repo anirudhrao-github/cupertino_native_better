@@ -1,9 +1,9 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint cupertino_native_plus.podspec` to validate before publishing.
+# Run `pod lib lint cupertino_native_better.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'cupertino_native_plus'
+  s.name             = 'cupertino_native_better'
   s.version          = '0.0.1'
   s.summary          = 'Native Liquid Glass widgets for iOS and macOS with pixel-perfect fidelity.'
   s.description      = <<-DESC

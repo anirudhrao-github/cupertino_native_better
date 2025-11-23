@@ -116,23 +116,25 @@ class _CNSwitchState extends State<CNSwitch> {
   @override
   Widget build(BuildContext context) {
     // Check if we should use native platform view
-    final isIOSOrMacOS = defaultTargetPlatform == TargetPlatform.iOS ||
+    final isIOSOrMacOS =
+        defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
-    final shouldUseNative = isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
+    final shouldUseNative =
+        isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
 
     // Fallback to Flutter widgets for non-iOS/macOS or iOS/macOS < 26
     if (!shouldUseNative) {
       // For non-iOS/macOS, use Material Switch
       if (!isIOSOrMacOS) {
-      return SizedBox(
-        height: widget.height,
-        child: Switch(
-          value: widget.value,
-          onChanged: widget.enabled ? widget.onChanged : null,
+        return SizedBox(
+          height: widget.height,
+          child: Switch(
+            value: widget.value,
+            onChanged: widget.enabled ? widget.onChanged : null,
           ),
         );
       }
-      
+
       // For iOS/macOS < 26, use CupertinoSwitch
       return SizedBox(
         height: widget.height,

@@ -84,10 +84,7 @@ class CNPopupGesture extends StatelessWidget {
         );
       },
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: animation,
-          child: child,
-        );
+        return FadeTransition(opacity: animation, child: child);
       },
     );
   }
@@ -167,9 +164,9 @@ class _CNPopupMenuOverlay extends StatelessWidget {
                 child: Container(
                   width: menuWidth,
                   decoration: BoxDecoration(
-                    color: CupertinoTheme.of(context)
-                        .scaffoldBackgroundColor
-                        .withValues(alpha: 0.95),
+                    color: CupertinoTheme.of(
+                      context,
+                    ).scaffoldBackgroundColor.withValues(alpha: 0.95),
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -237,7 +234,8 @@ class _CNPopupMenuOverlay extends StatelessWidget {
                   Icon(
                     item.customIcon,
                     size: 20,
-                    color: item.iconColor ??
+                    color:
+                        item.iconColor ??
                         (item.enabled
                             ? CupertinoTheme.of(context).primaryColor
                             : CupertinoColors.inactiveGray),

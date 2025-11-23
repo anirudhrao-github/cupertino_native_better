@@ -7,7 +7,7 @@
 Native iOS 26+ **Liquid Glass** widgets for Flutter with pixel-perfect fidelity. This package renders authentic Apple UI components using native platform views, providing the genuine iOS/macOS look and feel that Flutter's built-in widgets cannot achieve.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/preview.png" alt="Preview" width="600"/>
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/preview.jpg" alt="Preview" width="600"/>
 </p>
 
 ## Why cupertino_native_better?
@@ -168,22 +168,32 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cupertino_native_better: ^1.0.0
+  cupertino_native_better: ^1.0.4
 ```
 
 ## Usage
 
-### Initialize Early
+### ⚠️ REQUIRED: Initialize Before Use
+
+**You MUST call `PlatformVersion.initialize()` before using any widgets!**
+
+Without initialization, the package cannot detect your iOS/macOS version and will **always fall back to old Cupertino buttons** - even on iOS 26+ devices.
 
 ```dart
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // REQUIRED: Initialize platform version detection
   await PlatformVersion.initialize();
+
   runApp(MyApp());
 }
 ```
+
+> **Why is this required?**
+> The package needs to detect your OS version to decide whether to use native Liquid Glass (iOS 26+) or fallback widgets (iOS < 26). Without initialization, `PlatformVersion.shouldUseNativeGlass` always returns `false`.
 
 ### Basic Button
 
@@ -309,7 +319,7 @@ print('macOS version: ${PlatformVersion.macOSVersion}');
    cupertino_native_plus: ^x.x.x
 
    # After
-   cupertino_native_better: ^1.0.0
+   cupertino_native_better: ^1.0.4
    ```
 
 2. Update imports:

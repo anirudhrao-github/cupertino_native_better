@@ -38,7 +38,7 @@
       "languageVersion": "3.1"
     },
     {
-      "name": "cupertino_native_plus",
+      "name": "cupertino_native_better",
       "rootUri": "../../",
       "packageUri": "lib/",
       "languageVersion": "3.9"
@@ -224,7 +224,7 @@
       "languageVersion": "3.1"
     },
     {
-      "name": "cupertino_native_example",
+      "name": "cupertino_native_better_example",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.9"

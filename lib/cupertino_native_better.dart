@@ -45,7 +45,7 @@
 /// - **Multiple Icon Types**: SF Symbols, custom IconData, and image assets.
 /// - **Dark Mode Support**: Automatic theme synchronization.
 /// - **Glass Effect Unioning**: Multiple buttons can share unified glass effects.
-library cupertino_native_better;
+library;
 
 // Platform interface
 export 'cupertino_native_platform_interface.dart';

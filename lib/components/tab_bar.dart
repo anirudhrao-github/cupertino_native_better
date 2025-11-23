@@ -43,7 +43,7 @@ class CNTabBarItem {
   /// Use icons from CupertinoIcons, Icons, or any custom IconData.
   /// The icon will be rendered to an image at 25pt (iOS standard tab bar icon size)
   /// and sent to the native platform. If provided, this takes precedence over [icon].
-  /// 
+  ///
   /// Examples:
   /// ```dart
   /// customIcon: CupertinoIcons.house
@@ -68,7 +68,7 @@ class CNTabBarItem {
 /// A Cupertino-native tab bar. Uses native UITabBar/NSTabView style visuals.
 class CNTabBar extends StatefulWidget {
   /// Creates a Cupertino-native tab bar.
-  /// 
+  ///
   /// According to Apple's Human Interface Guidelines, tab bars should contain
   /// 3-5 tabs for optimal usability. More than 5 tabs can make the interface
   /// cluttered and reduce tappability.
@@ -84,11 +84,18 @@ class CNTabBar extends StatefulWidget {
     this.split = false,
     this.rightCount = 1,
     this.shrinkCentered = true,
-    this.splitSpacing = 12.0, // Apple's recommended spacing for visual separation
+    this.splitSpacing =
+        12.0, // Apple's recommended spacing for visual separation
   }) : assert(items.length >= 2, 'Tab bar must have at least 2 items'),
-       assert(items.length <= 5, 'Tab bar should have 5 or fewer items for optimal usability'),
+       assert(
+         items.length <= 5,
+         'Tab bar should have 5 or fewer items for optimal usability',
+       ),
        assert(rightCount >= 1, 'Right count must be at least 1'),
-       assert(rightCount < items.length, 'Right count must be less than total items');
+       assert(
+         rightCount < items.length,
+         'Right count must be less than total items',
+       );
 
   /// Items to display in the tab bar.
   final List<CNTabBarItem> items;
@@ -112,13 +119,13 @@ class CNTabBar extends StatefulWidget {
   final double? height;
 
   /// When true, splits items between left and right sections.
-  /// 
+  ///
   /// This follows Apple's HIG guidelines for organizing related tab functions
   /// into logical groups with clear visual separation.
   final bool split;
 
   /// How many trailing items to pin right when [split] is true.
-  /// 
+  ///
   /// Must be less than the total number of items. Follows Apple's HIG
   /// recommendation for maintaining balanced visual hierarchy.
   final int rightCount; // how many trailing items to pin right when split
@@ -126,7 +133,7 @@ class CNTabBar extends StatefulWidget {
   final bool shrinkCentered;
 
   /// Gap between left/right halves when split.
-  /// 
+  ///
   /// Defaults to 12pt following Apple's HIG recommendations for visual separation.
   final double splitSpacing; // gap between left/right halves when split
 
@@ -169,9 +176,11 @@ class _CNTabBarState extends State<CNTabBar> {
   @override
   Widget build(BuildContext context) {
     // Check if we should use native platform view
-    final isIOSOrMacOS = defaultTargetPlatform == TargetPlatform.iOS ||
+    final isIOSOrMacOS =
+        defaultTargetPlatform == TargetPlatform.iOS ||
         defaultTargetPlatform == TargetPlatform.macOS;
-    final shouldUseNative = isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
+    final shouldUseNative =
+        isIOSOrMacOS && PlatformVersion.shouldUseNativeGlass;
 
     // Fallback to Flutter widgets for non-iOS/macOS or iOS/macOS < 26
     if (!shouldUseNative) {
@@ -203,10 +212,7 @@ class _CNTabBarState extends State<CNTabBar> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           // Show placeholder while rendering
-          return SizedBox(
-            height: widget.height ?? 50,
-            width: double.infinity,
-          );
+          return SizedBox(height: widget.height ?? 50, width: double.infinity);
         }
 
         final iconBytes = snapshot.data!;
@@ -251,7 +257,10 @@ class _CNTabBarState extends State<CNTabBar> {
         // For activeImageAsset, we don't need to render to bytes - native code will handle it
         activeCustomIconBytes.add(null);
       } else if (item.activeCustomIcon != null) {
-        final bytes = await iconDataToImageBytes(item.activeCustomIcon!, size: 25.0);
+        final bytes = await iconDataToImageBytes(
+          item.activeCustomIcon!,
+          size: 25.0,
+        );
         activeCustomIconBytes.add(bytes);
       } else if (item.customIcon != null) {
         activeCustomIconBytes.add(customIconBytes.last); // Use same as normal
@@ -268,25 +277,36 @@ class _CNTabBarState extends State<CNTabBar> {
     required List<Uint8List?> customIconBytes,
     required List<Uint8List?> activeCustomIconBytes,
   }) async {
+    // Capture all context-derived values before any async operations
+    final capturedDevicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final capturedIsDark = _isDark;
+    final capturedStyle = encodeStyle(context, tint: _effectiveTint);
+    final capturedBackgroundColor = resolveColorToArgb(
+      widget.backgroundColor,
+      context,
+    );
+
     final labels = widget.items.map((e) => e.label ?? '').toList();
     final symbols = widget.items.map((e) => e.icon?.name ?? '').toList();
-    final activeSymbols = widget.items.map((e) => e.activeIcon?.name ?? e.icon?.name ?? '').toList();
+    final activeSymbols = widget.items
+        .map((e) => e.activeIcon?.name ?? e.icon?.name ?? '')
+        .toList();
     final badges = widget.items.map((e) => e.badge ?? '').toList();
-    
+
     // Extract imageAsset data and resolve asset paths based on device pixel ratio
     final imageAssetPaths = await Future.wait(
-      widget.items.map((e) async => 
-        e.imageAsset != null 
-          ? await resolveAssetPathForPixelRatio(e.imageAsset!.assetPath)
-          : ''
-      )
+      widget.items.map(
+        (e) async => e.imageAsset != null
+            ? await resolveAssetPathForPixelRatio(e.imageAsset!.assetPath)
+            : '',
+      ),
     );
     final activeImageAssetPaths = await Future.wait(
-      widget.items.map((e) async => 
-        e.activeImageAsset != null 
-          ? await resolveAssetPathForPixelRatio(e.activeImageAsset!.assetPath)
-          : ''
-      )
+      widget.items.map(
+        (e) async => e.activeImageAsset != null
+            ? await resolveAssetPathForPixelRatio(e.activeImageAsset!.assetPath)
+            : '',
+      ),
     );
 
     if (!mounted) return const SizedBox();
@@ -295,29 +315,38 @@ class _CNTabBarState extends State<CNTabBar> {
         .map((e) => (widget.iconSize ?? e.icon?.size ?? e.imageAsset?.size))
         .toList();
     final colors = widget.items
-        .map((e) => resolveColorToArgb(e.icon?.color ?? e.imageAsset?.color, context))
+        .map(
+          (e) =>
+              resolveColorToArgb(e.icon?.color ?? e.imageAsset?.color, context),
+        )
         .toList();
 
-    final imageAssetData = widget.items.map((e) => e.imageAsset?.imageData).toList();
-    final activeImageAssetData = widget.items.map((e) => e.activeImageAsset?.imageData).toList();
+    final imageAssetData = widget.items
+        .map((e) => e.imageAsset?.imageData)
+        .toList();
+    final activeImageAssetData = widget.items
+        .map((e) => e.activeImageAsset?.imageData)
+        .toList();
     // Auto-detect format if not provided (use resolved paths)
     final imageAssetFormats = await Future.wait(
       widget.items.asMap().entries.map((entry) async {
         final e = entry.value;
         if (e.imageAsset == null) return '';
         final resolvedPath = imageAssetPaths[entry.key];
-        return e.imageAsset!.imageFormat ?? 
-            detectImageFormat(resolvedPath, e.imageAsset!.imageData) ?? '';
-      })
+        return e.imageAsset!.imageFormat ??
+            detectImageFormat(resolvedPath, e.imageAsset!.imageData) ??
+            '';
+      }),
     );
     final activeImageAssetFormats = await Future.wait(
       widget.items.asMap().entries.map((entry) async {
         final e = entry.value;
         if (e.activeImageAsset == null) return '';
         final resolvedPath = activeImageAssetPaths[entry.key];
-        return e.activeImageAsset!.imageFormat ?? 
-            detectImageFormat(resolvedPath, e.activeImageAsset!.imageData) ?? '';
-      })
+        return e.activeImageAsset!.imageFormat ??
+            detectImageFormat(resolvedPath, e.activeImageAsset!.imageData) ??
+            '';
+      }),
     );
 
     if (!mounted) return const SizedBox();
@@ -335,21 +364,18 @@ class _CNTabBarState extends State<CNTabBar> {
       'activeImageAssetData': activeImageAssetData,
       'imageAssetFormats': imageAssetFormats,
       'activeImageAssetFormats': activeImageAssetFormats,
-      'iconScale': MediaQuery.of(context).devicePixelRatio, // Pass the scale!
+      'iconScale': capturedDevicePixelRatio, // Pass the scale!
       'sfSymbolSizes': sizes,
       'sfSymbolColors': colors,
       'selectedIndex': widget.currentIndex,
-      'isDark': _isDark,
+      'isDark': capturedIsDark,
       'split': widget.split,
       'rightCount': widget.rightCount,
       'splitSpacing': widget.splitSpacing,
-      'style': encodeStyle(context, tint: _effectiveTint)
+      'style': capturedStyle
         ..addAll({
-          if (widget.backgroundColor != null)
-            'backgroundColor': resolveColorToArgb(
-              widget.backgroundColor,
-              context,
-            ),
+          if (capturedBackgroundColor != null)
+            'backgroundColor': capturedBackgroundColor,
         }),
     };
 
@@ -393,7 +419,7 @@ class _CNTabBarState extends State<CNTabBar> {
     _lastSplit = widget.split;
     _lastRightCount = widget.rightCount;
     _lastSplitSpacing = widget.splitSpacing;
-    
+
     // Force refresh for label rendering on iOS < 16
     // Wait for next frame to ensure view is fully initialized
     if (defaultTargetPlatform == TargetPlatform.iOS) {
@@ -425,7 +451,7 @@ class _CNTabBarState extends State<CNTabBar> {
     final tint = resolveColorToArgb(_effectiveTint, context);
     final bg = resolveColorToArgb(widget.backgroundColor, context);
     final iconScale = MediaQuery.of(context).devicePixelRatio;
-    
+
     if (_lastIndex != idx) {
       await ch.invokeMethod('setSelectedIndex', {'index': idx});
       _lastIndex = idx;
@@ -447,33 +473,58 @@ class _CNTabBarState extends State<CNTabBar> {
     // Items update (for hot reload or dynamic changes)
     final labels = widget.items.map((e) => e.label ?? '').toList();
     final symbols = widget.items.map((e) => e.icon?.name ?? '').toList();
-    final activeSymbols = widget.items.map((e) => e.activeIcon?.name ?? e.icon?.name ?? '').toList();
+    final activeSymbols = widget.items
+        .map((e) => e.activeIcon?.name ?? e.icon?.name ?? '')
+        .toList();
     final badges = widget.items.map((e) => e.badge ?? '').toList();
-    
+
     // Check if basic properties changed
     if (_lastLabels?.join('|') != labels.join('|') ||
         _lastSymbols?.join('|') != symbols.join('|') ||
         _lastActiveSymbols?.join('|') != activeSymbols.join('|') ||
         _lastBadges?.join('|') != badges.join('|')) {
-      
       // Re-render custom icons if items changed
       final iconBytes = await _renderCustomIcons();
       final customIconBytes = iconBytes[0];
       final activeCustomIconBytes = iconBytes[1];
-      
+
       // Extract imageAsset properties
-      final imageAssetPaths = widget.items.map((e) => e.imageAsset?.assetPath ?? '').toList();
-      final activeImageAssetPaths = widget.items.map((e) => e.activeImageAsset?.assetPath ?? '').toList();
-      final imageAssetData = widget.items.map((e) => e.imageAsset?.imageData).toList();
-      final activeImageAssetData = widget.items.map((e) => e.activeImageAsset?.imageData).toList();
+      final imageAssetPaths = widget.items
+          .map((e) => e.imageAsset?.assetPath ?? '')
+          .toList();
+      final activeImageAssetPaths = widget.items
+          .map((e) => e.activeImageAsset?.assetPath ?? '')
+          .toList();
+      final imageAssetData = widget.items
+          .map((e) => e.imageAsset?.imageData)
+          .toList();
+      final activeImageAssetData = widget.items
+          .map((e) => e.activeImageAsset?.imageData)
+          .toList();
       // Auto-detect format if not provided
-      final imageAssetFormats = widget.items.map((e) => 
-          e.imageAsset?.imageFormat ?? 
-          detectImageFormat(e.imageAsset?.assetPath, e.imageAsset?.imageData) ?? '').toList();
-      final activeImageAssetFormats = widget.items.map((e) => 
-          e.activeImageAsset?.imageFormat ?? 
-          detectImageFormat(e.activeImageAsset?.assetPath, e.activeImageAsset?.imageData) ?? '').toList();
-      
+      final imageAssetFormats = widget.items
+          .map(
+            (e) =>
+                e.imageAsset?.imageFormat ??
+                detectImageFormat(
+                  e.imageAsset?.assetPath,
+                  e.imageAsset?.imageData,
+                ) ??
+                '',
+          )
+          .toList();
+      final activeImageAssetFormats = widget.items
+          .map(
+            (e) =>
+                e.activeImageAsset?.imageFormat ??
+                detectImageFormat(
+                  e.activeImageAsset?.assetPath,
+                  e.activeImageAsset?.imageData,
+                ) ??
+                '',
+          )
+          .toList();
+
       await ch.invokeMethod('setItems', {
         'labels': labels,
         'sfSymbols': symbols,
@@ -535,7 +586,9 @@ class _CNTabBarState extends State<CNTabBar> {
   void _cacheItems() {
     _lastLabels = widget.items.map((e) => e.label ?? '').toList();
     _lastSymbols = widget.items.map((e) => e.icon?.name ?? '').toList();
-    _lastActiveSymbols = widget.items.map((e) => e.activeIcon?.name ?? e.icon?.name ?? '').toList();
+    _lastActiveSymbols = widget.items
+        .map((e) => e.activeIcon?.name ?? e.icon?.name ?? '')
+        .toList();
     _lastBadges = widget.items.map((e) => e.badge ?? '').toList();
     // Note: Custom icon bytes are cached in _syncPropsToNativeIfNeeded when rendered
   }
@@ -569,10 +622,7 @@ class _CNTabBarState extends State<CNTabBar> {
       );
     }
     if (item.imageAsset != null) {
-      return CNIcon(
-        imageAsset: item.imageAsset,
-        size: item.imageAsset!.size,
-      );
+      return CNIcon(imageAsset: item.imageAsset, size: item.imageAsset!.size);
     }
 
     // Check for custom icon (medium priority)

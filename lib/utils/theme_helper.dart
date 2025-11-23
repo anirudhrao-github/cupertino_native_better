@@ -57,4 +57,3 @@ class ThemeHelper {
     return getBrightness(context) == Brightness.dark;
   }
 }
-

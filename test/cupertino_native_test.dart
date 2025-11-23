@@ -1,4 +1,3 @@
-import 'package:cupertino_native_better/cupertino_native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';

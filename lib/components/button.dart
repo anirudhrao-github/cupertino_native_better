@@ -576,10 +576,15 @@ class _CNButtonState extends State<CNButton> {
   Future<void> _syncPropsToNativeIfNeeded() async {
     final ch = _channel;
     if (ch == null) return;
+    // Capture all context-derived values before any async operations
     final tint = resolveColorToArgb(_effectiveTint, context);
     final preIconName = widget.icon?.name;
     final preIconSize = widget.icon?.size;
     final preIconColor = resolveColorToArgb(widget.icon?.color, context);
+    final preImageAssetColor = resolveColorToArgb(
+      widget.imageAsset?.color,
+      context,
+    );
 
     if (_lastTint != tint && tint != null) {
       await ch.invokeMethod('setStyle', {'tint': tint});
@@ -658,7 +663,7 @@ class _CNButtonState extends State<CNButton> {
           (hadImageAsset != hasImageAsset) || (hadCustomIcon != hasCustomIcon);
 
       // Handle imageAsset (takes precedence over SF Symbol)
-          if (widget.imageAsset != null) {
+      if (widget.imageAsset != null) {
         // Update if path/data changed OR if we switched from another icon type
         if (imageAssetPathChanged || imageAssetDataChanged || iconTypeChanged) {
           // Resolve asset path based on device pixel ratio
@@ -698,19 +703,13 @@ class _CNButtonState extends State<CNButton> {
         } else {
           // Even if path didn't change, check if other imageAsset properties changed
           final sizeChanged = _lastIconSize != widget.imageAsset!.size;
-          final colorChanged =
-              _lastIconColor !=
-              resolveColorToArgb(widget.imageAsset!.color, context);
+          final colorChanged = _lastIconColor != preImageAssetColor;
 
           if (sizeChanged || colorChanged) {
             updates['buttonIconSize'] = widget.imageAsset!.size;
-            if (widget.imageAsset!.color != null) {
-              if (mounted) {
-                updates['buttonIconColor'] = resolveColorToArgb(
-                  widget.imageAsset!.color,
-                  context,
-                );
-              }
+            if (widget.imageAsset!.color != null &&
+                preImageAssetColor != null) {
+              updates['buttonIconColor'] = preImageAssetColor;
             }
             if (widget.imageAsset!.mode != null) {
               updates['buttonIconRenderingMode'] =
@@ -892,7 +891,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
               ],
             );
@@ -904,7 +905,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
                 if (widget.config.imagePadding != null)
                   SizedBox(width: widget.config.imagePadding!),
@@ -922,7 +925,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
               ],
             );
@@ -934,7 +939,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
                 if (widget.config.imagePadding != null)
                   SizedBox(height: widget.config.imagePadding!),
@@ -947,7 +954,9 @@ class _CNButtonState extends State<CNButton> {
         child = Text(
           widget.label ?? '',
           maxLines: widget.config.maxLines,
-          overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+          overflow: widget.config.maxLines != null
+              ? TextOverflow.ellipsis
+              : null,
         );
       }
     }
@@ -984,16 +993,25 @@ class _CNButtonState extends State<CNButton> {
     }
 
     final defaultHeight = widget.config.minHeight ?? calculatedSize ?? 44.0;
+    final buttonWidth = widget.isIcon
+        ? (widget.config.width ?? calculatedSize ?? defaultHeight)
+        : null;
+    final buttonPadding = widget.isIcon
+        ? (effectivePadding ?? const EdgeInsets.all(8))
+        : (widget.config.padding ??
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 8));
+    final borderRadius = widget.config.borderRadius ?? defaultHeight / 2;
+
     return SizedBox(
       height: defaultHeight,
-      width: widget.isIcon
-          ? (widget.config.width ?? calculatedSize ?? defaultHeight)
-          : null,
+      width: buttonWidth,
       child: CupertinoButton(
-        padding: widget.isIcon
-            ? (effectivePadding ?? const EdgeInsets.all(4))
-            : (widget.config.padding ??
-                  EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
+        // ignore: deprecated_member_use
+        minSize:
+            0, // Disable built-in minimum size to prevent conflicts with SizedBox
+        padding: buttonPadding,
+        borderRadius: BorderRadius.circular(borderRadius),
+        pressedOpacity: 0.4, // Explicit press feedback
         color: _getCupertinoButtonColor(context),
         onPressed: (widget.enabled && widget.onPressed != null)
             ? widget.onPressed
@@ -1041,7 +1059,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
               ],
             );
@@ -1053,7 +1073,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
                 if (widget.config.imagePadding != null)
                   SizedBox(width: widget.config.imagePadding!),
@@ -1071,7 +1093,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
               ],
             );
@@ -1083,7 +1107,9 @@ class _CNButtonState extends State<CNButton> {
                 Text(
                   widget.label ?? '',
                   maxLines: widget.config.maxLines,
-                  overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+                  overflow: widget.config.maxLines != null
+                      ? TextOverflow.ellipsis
+                      : null,
                 ),
                 if (widget.config.imagePadding != null)
                   SizedBox(height: widget.config.imagePadding!),
@@ -1096,7 +1122,9 @@ class _CNButtonState extends State<CNButton> {
         child = Text(
           widget.label ?? '',
           maxLines: widget.config.maxLines,
-          overflow: widget.config.maxLines != null ? TextOverflow.ellipsis : null,
+          overflow: widget.config.maxLines != null
+              ? TextOverflow.ellipsis
+              : null,
         );
       }
     }

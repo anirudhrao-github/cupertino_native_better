@@ -1,3 +1,55 @@
+## 1.0.5
+
+### Improvements
+
+#### Static Analysis Cleanup
+- **Fixed**: All `use_build_context_synchronously` warnings by capturing context-derived values before async gaps
+- **Fixed**: `dangling_library_doc_comments` warning
+- **Fixed**: `unnecessary_library_name` and `unnecessary_import` warnings
+- **Improved**: Pub points score (static analysis section)
+
+---
+
+## 1.0.4
+
+### Bug Fixes
+
+#### CNButton Tap Detection (iOS < 26 Fallback)
+- **Fixed**: Unreliable tap detection in CupertinoButton fallback mode
+- **Issue**: Buttons showed press animation but `onPressed` didn't fire consistently
+- **Solution**: Added `minSize: 0` to prevent CupertinoButton's internal minimum size from conflicting with SizedBox constraints
+- **Added**: Explicit `borderRadius` and `pressedOpacity` for better hit testing and visual feedback
+
+---
+
+## 1.0.3
+
+### Bug Fixes
+
+#### Critical: iOS 18 Crash Fix
+- **Fixed**: Reverted GestureDetector overlay that caused crash on iOS 18
+- **Error**: `unrecognized selector sent to instance 'onTap:'`
+- **Solution**: Removed Stack/GestureDetector approach, kept simple CupertinoButton
+
+#### Icon Button Padding (kept from 1.0.2)
+- **Fixed**: Increased default padding for icon buttons from 4 to 8 pixels
+
+---
+
+## 1.0.2 (BROKEN - DO NOT USE)
+
+### Bug Fixes
+
+#### CNButton Tap Detection (iOS < 26 Fallback)
+- **BROKEN**: Added GestureDetector overlay that crashed on iOS 18
+- Use 1.0.3 instead
+
+#### Icon Button Padding
+- **Fixed**: Increased default padding for icon buttons from 4 to 8 pixels
+- Icons now have proper breathing room from the button border
+
+---
+
 ## 1.0.1
 
 * **Pub Points Improvement**: Addressed static analysis issues to improve package score.

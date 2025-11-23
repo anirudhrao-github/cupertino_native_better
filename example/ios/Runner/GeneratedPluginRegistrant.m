@@ -6,10 +6,10 @@
 
 #import "GeneratedPluginRegistrant.h"
 
-#if __has_include(<cupertino_native_plus/CupertinoNativePlugin.h>)
-#import <cupertino_native_plus/CupertinoNativePlugin.h>
+#if __has_include(<cupertino_native_better/CupertinoNativePlugin.h>)
+#import <cupertino_native_better/CupertinoNativePlugin.h>
 #else
-@import cupertino_native_plus;
+@import cupertino_native_better;
 #endif
 
 #if __has_include(<integration_test/IntegrationTestPlugin.h>)
