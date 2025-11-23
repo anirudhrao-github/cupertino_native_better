@@ -1,3 +1,12 @@
+## 1.0.6
+
+### Improvements
+
+- **Fixed**: Dart formatting issues to achieve full 50/50 static analysis score on pub.dev
+- **Added**: Preview image for pub.dev package page
+
+---
+
 ## 1.0.5
 
 ### Improvements
