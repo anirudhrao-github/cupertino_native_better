@@ -1,4 +1,4 @@
-## 1.1.0-prerelease
+## 1.1.0
 
 ### Documentation Overhaul
 
