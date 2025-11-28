@@ -10,6 +10,37 @@ Native iOS 26+ **Liquid Glass** widgets for Flutter with pixel-perfect fidelity.
   <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/preview.jpg" alt="Preview" width="600"/>
 </p>
 
+## ⚠️ REQUIRED: Initialize Before Use
+
+**You MUST call `PlatformVersion.initialize()` before using any widgets!**
+
+Without initialization, the package cannot detect your iOS/macOS version and will **always fall back to old Cupertino buttons** - even on iOS 26+ devices.
+
+```dart
+import 'package:cupertino_native_better/cupertino_native_better.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // REQUIRED: Initialize platform version detection
+  await PlatformVersion.initialize();
+
+  runApp(MyApp());
+}
+```
+
+> **Why is this required?**
+> The package needs to detect your OS version to decide whether to use native Liquid Glass (iOS 26+) or fallback widgets (iOS < 26). Without initialization, `PlatformVersion.shouldUseNativeGlass` always returns `false`.
+
+## Performance Best Practices
+
+### ⚠️ LiquidGlassContainer & Lists
+
+`LiquidGlassContainer` uses a **Platform View** (`UiKitView` / `AppKitView`) under the hood. While powerful, platform views are more expensive than standard Flutter widgets.
+
+*   **DO NOT** use `LiquidGlassContainer` inside long scrolling lists (`ListView.builder`, `GridView`) with many items. This will cause significant performance drops (jank).
+*   **DO** use `LiquidGlassContainer` for static elements like Cards, Headers, Navigation Bars, or Floating Action Buttons.
+
 ## Why cupertino_native_better?
 
 ### Comparison with Other Packages
@@ -56,17 +87,20 @@ This approach works reliably in **both debug and release builds**.
 
 ### Widgets
 
-| Widget | Description |
-|--------|-------------|
-| `CNButton` | Native push button with Liquid Glass effects, SF Symbols, and image assets |
-| `CNIcon` | Platform-rendered SF Symbols, custom IconData, or image assets |
-| `CNTabBar` | Native tab bar with split mode for scroll-aware layouts |
-| `CNSlider` | Native slider with controller for imperative updates |
-| `CNSwitch` | Native toggle switch with controller support |
-| `CNPopupMenuButton` | Native popup menu with dividers and icons |
-| `CNSegmentedControl` | Native segmented control |
-| `CNGlassButtonGroup` | Grouped buttons with unified glass blending |
-| `LiquidGlassContainer` | Apply Liquid Glass effects to any widget |
+| Widget | Description | Controller |
+|--------|-------------|:----------:|
+| `CNButton` | Native push button with Liquid Glass effects, SF Symbols, and image assets | - |
+| `CNButton.icon` | Circular icon-only button variant | - |
+| `CNIcon` | Platform-rendered SF Symbols, custom IconData, or image assets | - |
+| `CNTabBar` | Native tab bar with split mode for scroll-aware layouts | - |
+| `CNSlider` | Native slider with min/max range and step support | `CNSliderController` |
+| `CNSwitch` | Native toggle switch with animated state changes | `CNSwitchController` |
+| `CNPopupMenuButton` | Native popup menu with dividers, icons, and image assets | - |
+| `CNPopupMenuButton.icon` | Circular icon-only popup menu variant | - |
+| `CNSegmentedControl` | Native segmented control with SF Symbols support | - |
+| `CNGlassButtonGroup` | Grouped buttons with unified glass blending | - |
+| `LiquidGlassContainer` | Apply Liquid Glass effects to any Flutter widget | - |
+| `CNGlassCard` | **(Experimental)** Pre-styled card with optional breathing glow animation | - |
 
 ### Icon Support
 
@@ -141,6 +175,10 @@ Row(
 
 ### Tab Bar with Split Mode
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/tab_bar_preview.png" width="300" alt="Tab Bar Preview"/>
+</p>
+
 ```dart
 CNTabBar(
   items: [
@@ -173,29 +211,11 @@ dependencies:
 
 ## Usage
 
-### ⚠️ REQUIRED: Initialize Before Use
-
-**You MUST call `PlatformVersion.initialize()` before using any widgets!**
-
-Without initialization, the package cannot detect your iOS/macOS version and will **always fall back to old Cupertino buttons** - even on iOS 26+ devices.
-
-```dart
-import 'package:cupertino_native_better/cupertino_native_better.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // REQUIRED: Initialize platform version detection
-  await PlatformVersion.initialize();
-
-  runApp(MyApp());
-}
-```
-
-> **Why is this required?**
-> The package needs to detect your OS version to decide whether to use native Liquid Glass (iOS 26+) or fallback widgets (iOS < 26). Without initialization, `PlatformVersion.shouldUseNativeGlass` always returns `false`.
-
 ### Basic Button
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/button_preview.png" width="300" alt="Button Preview"/>
+</p>
 
 ```dart
 CNButton(
@@ -211,7 +231,21 @@ CNButton(
 )
 ```
 
+### Button Styles Gallery
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/button_preview_2.png" width="300" alt="Glass Button Styles"/>
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/button_preview_3.png" width="300" alt="Filled Button Styles"/>
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/button_preview_4.png" width="300" alt="More Button Styles"/>
+</p>
+
 ### Icon-Only Button
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/icon_button_preview.png" width="300" alt="Icon Button Preview"/>
+</p>
 
 ```dart
 CNButton.icon(
@@ -222,6 +256,10 @@ CNButton.icon(
 ```
 
 ### Native Icons
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/icon_preview.png" width="300" alt="Icon Preview"/>
+</p>
 
 ```dart
 CNIcon(
@@ -235,6 +273,10 @@ CNIcon(
 ```
 
 ### Slider with Controller
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/slider_preview.jpg" width="300" alt="Slider Preview"/>
+</p>
 
 ```dart
 final controller = CNSliderController();
@@ -251,6 +293,107 @@ CNSlider(
 
 // Programmatic update
 controller.setValue(0.75);
+```
+
+### Switch with Controller
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/switch_preview.png" width="300" alt="Switch Preview"/>
+</p>
+
+```dart
+final controller = CNSwitchController();
+
+CNSwitch(
+  value: _isEnabled,
+  onChanged: (value) {
+    setState(() => _isEnabled = value);
+  },
+  controller: controller,
+  color: Colors.green, // Optional tint color
+)
+
+// Programmatic control
+controller.setValue(true, animated: true);
+controller.setEnabled(false); // Disable interaction
+```
+
+### Popup Menu Button
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/popup_menu_preview.png" width="300" alt="Popup Menu Button"/>
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/popup_menu_opened_preview.jpg" width="300" alt="Popup Menu Opened"/>
+</p>
+
+```dart
+// Text-labeled popup menu
+CNPopupMenuButton(
+  buttonLabel: 'Options',
+  buttonStyle: CNButtonStyle.glass,
+  items: [
+    CNPopupMenuItem(
+      label: 'Edit',
+      icon: CNSymbol('pencil'),
+    ),
+    CNPopupMenuItem(
+      label: 'Share',
+      icon: CNSymbol('square.and.arrow.up'),
+    ),
+    const CNPopupMenuDivider(), // Visual separator
+    CNPopupMenuItem(
+      label: 'Delete',
+      icon: CNSymbol('trash', color: Colors.red),
+      enabled: true,
+    ),
+  ],
+  onSelected: (index) {
+    print('Selected item at index: $index');
+  },
+)
+
+// Icon-only popup menu (circular glass button)
+CNPopupMenuButton.icon(
+  buttonIcon: CNSymbol('ellipsis.circle', size: 24),
+  buttonStyle: CNButtonStyle.glass,
+  items: [
+    CNPopupMenuItem(label: 'Option 1', icon: CNSymbol('star')),
+    CNPopupMenuItem(label: 'Option 2', icon: CNSymbol('heart')),
+  ],
+  onSelected: (index) {},
+)
+```
+
+### Segmented Control
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/gunumdogdu/cupertino_native_better/main/misc/screenshots/segmented_control_preview.png" width="300" alt="Segmented Control Preview"/>
+</p>
+
+```dart
+// Text-only segments
+CNSegmentedControl(
+  labels: ['Day', 'Week', 'Month', 'Year'],
+  selectedIndex: _selectedIndex,
+  onValueChanged: (index) {
+    setState(() => _selectedIndex = index);
+  },
+  color: Colors.blue, // Optional tint color
+)
+
+// Segments with SF Symbols
+CNSegmentedControl(
+  labels: ['List', 'Grid', 'Gallery'],
+  sfSymbols: [
+    CNSymbol('list.bullet'),
+    CNSymbol('square.grid.2x2'),
+    CNSymbol('photo.on.rectangle'),
+  ],
+  selectedIndex: _viewMode,
+  onValueChanged: (index) {
+    setState(() => _viewMode = index);
+  },
+  shrinkWrap: true, // Size to content
+)
 ```
 
 ### Liquid Glass Container
@@ -272,6 +415,15 @@ LiquidGlassContainer(
 // Or use the extension
 Text('Glass Effect')
   .liquidGlass(cornerRadius: 16)
+```
+
+### Experimental: Glass Card
+
+```dart
+CNGlassCard(
+  child: Text("Hello"),
+  breathing: true, // Optional subtle glow animation
+)
 ```
 
 ## Platform Fallbacks

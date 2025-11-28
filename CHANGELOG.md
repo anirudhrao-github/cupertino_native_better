@@ -1,3 +1,25 @@
+## 1.1.0-prerelease
+
+### Documentation Overhaul
+
+- **Added**: Complete documentation for all widgets with real iOS 26 screenshots
+- **Added**: CNSwitch documentation with controller examples
+- **Added**: CNPopupMenuButton documentation with text and icon variants
+- **Added**: CNSegmentedControl documentation with SF Symbols support
+- **Added**: Button Styles Gallery showcasing multiple button styles
+- **Added**: Popup menu opened state preview image
+- **Enhanced**: Features table with Controller column
+- **Enhanced**: All images now use centered alignment for better presentation
+
+### New Screenshots
+
+- Real iOS 26 Liquid Glass component screenshots (replacing AI-generated placeholders)
+- Button styles gallery (4 preview images)
+- Switch, Slider, Popup Menu, Segmented Control, Tab Bar previews
+- Popup menu opened state preview
+
+---
+
 ## 1.0.6
 
 ### Improvements

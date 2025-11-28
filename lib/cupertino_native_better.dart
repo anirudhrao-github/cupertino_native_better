@@ -62,6 +62,7 @@ export 'components/popup_gesture.dart';
 export 'components/segmented_control.dart';
 export 'components/glass_button_group.dart';
 export 'components/liquid_glass_container.dart';
+export 'components/experimental/glass_card.dart';
 
 // Styles
 export 'style/button_style.dart';
