@@ -94,7 +94,7 @@ class CNGlassButtonGroup extends StatefulWidget {
 
   /// Returns the effective button count (from data or widgets).
   int get _effectiveButtonCount =>
-      _buttonWidgets != null ? _buttonWidgets!.length : buttons.length;
+      _buttonWidgets != null ? _buttonWidgets.length : buttons.length;
 
   @override
   State<CNGlassButtonGroup> createState() => _CNGlassButtonGroupState();
@@ -290,12 +290,14 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
         for (int i = 0; i < currentSnapshots.length; i++) {
           if (i >= _lastButtonSnapshots!.length ||
               !_lastButtonSnapshots![i].equals(currentSnapshots[i])) {
+            if (!mounted) return;
             final buttonData = _usingWidgets
                 ? await _buttonWidgetToMapAsync(
                     widget._buttonWidgets![i],
                     context,
                   )
                 : await _buttonDataToMapAsync(widget.buttons[i], context);
+            if (!mounted) return;
             await ch.invokeMethod('updateButton', {
               'index': i,
               'button': buttonData,

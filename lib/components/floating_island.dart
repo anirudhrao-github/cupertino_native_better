@@ -176,7 +176,6 @@ class _CNFloatingIslandState extends State<CNFloatingIsland>
   late AnimationController _animationController;
   late Animation<double> _expandAnimation;
 
-  MethodChannel? _nativeChannel;
   CNFloatingIslandController? _internalController;
   bool _isExpanded = false;
 
@@ -234,7 +233,6 @@ class _CNFloatingIslandState extends State<CNFloatingIsland>
 
   void _onPlatformViewCreated(int id) {
     final ch = MethodChannel('CNFloatingIsland_$id');
-    _nativeChannel = ch;
     _controller._attach(ch);
     ch.setMethodCallHandler(_onMethodCall);
   }

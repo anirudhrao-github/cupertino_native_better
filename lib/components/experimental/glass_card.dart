@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +78,6 @@ class _CNGlassCardState extends State<CNGlassCard>
   Offset _gyroOffset = Offset.zero;
   Size _cardSize = Size.zero;
   MethodChannel? _channel;
-  int? _viewId;
 
   @override
   void initState() {
@@ -117,7 +114,6 @@ class _CNGlassCardState extends State<CNGlassCard>
   }
 
   void _onPlatformViewCreated(int id) {
-    _viewId = id;
     final ch = MethodChannel('CNGlassCard_$id');
     _channel = ch;
     ch.setMethodCallHandler(_onMethodCall);
@@ -383,7 +379,7 @@ class _CNGlassCardState extends State<CNGlassCard>
                             radius: widget.spotlightRadius,
                             colors: [
                               effectiveColor
-                                  .withOpacity(widget.spotlightIntensity),
+                                  .withValues(alpha: widget.spotlightIntensity),
                               Colors.transparent,
                             ],
                           ),
@@ -409,7 +405,7 @@ class _CNGlassCardState extends State<CNGlassCard>
             boxShadow: [
               BoxShadow(
                 color: (widget.tint ?? CupertinoColors.systemBlue)
-                    .withOpacity(0.3 * _animation.value),
+                    .withValues(alpha: 0.3 * _animation.value),
                 blurRadius: 20 * _animation.value,
                 spreadRadius: 2 * _animation.value,
               ),
