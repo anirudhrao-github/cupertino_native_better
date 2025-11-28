@@ -35,6 +35,14 @@ public class CupertinoNativePlugin: NSObject, FlutterPlugin {
     
     let liquidGlassContainerFactory = LiquidGlassContainerFactory(messenger: registrar.messenger())
     registrar.register(liquidGlassContainerFactory, withId: "CupertinoNativeLiquidGlassContainer")
+
+    // Search bar
+    let searchBarFactory = CupertinoSearchBarFactory(messenger: registrar.messenger())
+    registrar.register(searchBarFactory, withId: "CNSearchBar")
+
+    // Floating island (Dynamic Island style)
+    let floatingIslandFactory = FloatingIslandFactory(messenger: registrar.messenger())
+    registrar.register(floatingIslandFactory, withId: "CNFloatingIsland")
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

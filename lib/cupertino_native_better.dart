@@ -62,13 +62,17 @@ export 'components/popup_gesture.dart';
 export 'components/segmented_control.dart';
 export 'components/glass_button_group.dart';
 export 'components/liquid_glass_container.dart';
+export 'components/search_bar.dart';
+export 'components/floating_island.dart';
 export 'components/experimental/glass_card.dart';
 
 // Styles
 export 'style/button_style.dart';
+export 'style/button_data.dart';
 export 'style/sf_symbol.dart';
 export 'style/image_placement.dart';
 export 'style/glass_effect.dart';
+export 'style/spotlight_mode.dart';
 
 // Utilities
 export 'utils/version_detector.dart';
