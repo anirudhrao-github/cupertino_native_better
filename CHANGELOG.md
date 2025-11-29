@@ -1,3 +1,19 @@
+## 1.1.4
+
+### Breaking Changes
+
+- **iOS Minimum Version**: Raised iOS deployment target from 13.0 to **15.0**
+  - Required for `@FocusState` and other iOS 15+ SwiftUI features
+  - Most production apps already target iOS 15+ (released September 2021)
+
+### Fixes
+
+- **Fixed**: Swift compiler error `'FocusState' is only available in iOS 15.0 or newer`
+- **Fixed**: Swift compiler error `'self' used before 'super.init' call` in CNSearchBar
+- **Fixed**: Pod installation issues when used in projects with iOS 15+ deployment target
+
+---
+
 ## 1.1.3
 
 ### Fixes

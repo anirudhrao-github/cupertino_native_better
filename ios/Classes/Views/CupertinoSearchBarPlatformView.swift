@@ -14,6 +14,9 @@ class CupertinoSearchBarPlatformView: NSObject, FlutterPlatformView {
         )
         self.container = UIView(frame: frame)
 
+        // Capture channel for use in closures before super.init()
+        let channelRef = self.channel
+
         // Parse arguments
         var placeholder = "Search"
         var expandable = true
@@ -65,17 +68,17 @@ class CupertinoSearchBarPlatformView: NSObject, FlutterPlatformView {
             autofocus: autofocus,
             searchIconName: searchIconName,
             clearIconName: clearIconName,
-            onTextChanged: { [weak self] text in
-                self?.channel.invokeMethod("textChanged", arguments: ["text": text])
+            onTextChanged: { text in
+                channelRef.invokeMethod("textChanged", arguments: ["text": text])
             },
-            onSubmitted: { [weak self] text in
-                self?.channel.invokeMethod("submitted", arguments: ["text": text])
+            onSubmitted: { text in
+                channelRef.invokeMethod("submitted", arguments: ["text": text])
             },
-            onExpandStateChanged: { [weak self] expanded in
-                self?.channel.invokeMethod(expanded ? "expanded" : "collapsed", arguments: nil)
+            onExpandStateChanged: { expanded in
+                channelRef.invokeMethod(expanded ? "expanded" : "collapsed", arguments: nil)
             },
-            onCancelTapped: { [weak self] in
-                self?.channel.invokeMethod("cancelTapped", arguments: nil)
+            onCancelTapped: {
+                channelRef.invokeMethod("cancelTapped", arguments: nil)
             }
         )
 
