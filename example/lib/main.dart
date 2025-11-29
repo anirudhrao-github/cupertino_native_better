@@ -223,7 +223,10 @@ class HomePage extends StatelessWidget {
               CupertinoListTile(
                 title: Text('Glass container'),
                 leading: CNIcon(
-                  symbol: CNSymbol('rectangle.topthird.inset', color: accentColor),
+                  symbol: CNSymbol(
+                    'rectangle.topthird.inset',
+                    color: accentColor,
+                  ),
                 ),
                 trailing: CupertinoListTileChevron(),
                 onTap: () {
@@ -245,9 +248,7 @@ class HomePage extends StatelessWidget {
                 trailing: CupertinoListTileChevron(),
                 onTap: () {
                   Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (_) => const OverlayTestPage(),
-                    ),
+                    CupertinoPageRoute(builder: (_) => const OverlayTestPage()),
                   );
                 },
               ),

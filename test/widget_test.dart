@@ -18,7 +18,9 @@ void main() {
       );
     }
 
-    testWidgets('renders with default placeholder when expanded', (tester) async {
+    testWidgets('renders with default placeholder when expanded', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildSearchBarTest(
           child: const CNSearchBar(
@@ -35,7 +37,9 @@ void main() {
       expect(find.byType(CupertinoTextField), findsOneWidget);
     });
 
-    testWidgets('renders with custom placeholder when expanded', (tester) async {
+    testWidgets('renders with custom placeholder when expanded', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildSearchBarTest(
           child: const CNSearchBar(
@@ -180,8 +184,9 @@ void main() {
       expect(tapped, true);
     });
 
-    testWidgets('shows expanded content when isExpanded is true',
-        (tester) async {
+    testWidgets('shows expanded content when isExpanded is true', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(

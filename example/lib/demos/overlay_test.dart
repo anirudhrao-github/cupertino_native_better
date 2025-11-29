@@ -27,16 +27,10 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
                 padding: EdgeInsets.all(16),
                 child: Text(
                   'Modal with Native Components',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                height: 1,
-                color: CupertinoColors.separator,
-              ),
+              Container(height: 1, color: CupertinoColors.separator),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -88,7 +82,9 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
       context: context,
       builder: (context) => CupertinoActionSheet(
         title: const Text('Bottom Sheet with Native Components'),
-        message: const Text('These components should appear above the content below.'),
+        message: const Text(
+          'These components should appear above the content below.',
+        ),
         actions: [
           CupertinoActionSheetAction(
             onPressed: () {
@@ -123,9 +119,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
             const SizedBox(height: 16),
             const Text('Icon in Dialog:'),
             const SizedBox(height: 8),
-            const CNIcon(
-              symbol: CNSymbol('checkmark.circle.fill', size: 32),
-            ),
+            const CNIcon(symbol: CNSymbol('checkmark.circle.fill', size: 32)),
             const SizedBox(height: 16),
             const Text(
               'Note: CNButton uses LayoutBuilder which conflicts with dialog layout constraints. Use CupertinoButton in dialogs instead.',
@@ -178,10 +172,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
           children: [
             const Text(
               'Overlay Test Page',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -195,10 +186,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
             // Test buttons that open overlays
             const Text(
               'Open Overlays:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
             CNButton(
@@ -231,10 +219,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
             // Native components that should be below overlays
             const Text(
               'Native Components (should be below overlays):',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 12),
             const Text('Button:'),
@@ -282,9 +267,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
             const SizedBox(height: 16),
             const Text('Icon:'),
             const SizedBox(height: 8),
-            const CNIcon(
-              symbol: CNSymbol('star.fill', size: 32),
-            ),
+            const CNIcon(symbol: CNSymbol('star.fill', size: 32)),
             const SizedBox(height: 16),
             const Text('Popup Menu Button:'),
             const SizedBox(height: 8),
@@ -310,10 +293,7 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
                 children: [
                   Text(
                     'Test Instructions:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -334,4 +314,3 @@ class _OverlayTestPageState extends State<OverlayTestPage> {
     );
   }
 }
-

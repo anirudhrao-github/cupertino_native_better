@@ -164,15 +164,23 @@ class _IconDemoPageState extends State<IconDemoPage> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: CupertinoColors.systemBlue.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: CupertinoColors.systemBlue.withOpacity(0.3)),
+                      border: Border.all(
+                        color: CupertinoColors.systemBlue.withOpacity(0.3),
+                      ),
                     ),
                     child: Text(
                       _useAlternateSvgIcons ? 'Reset' : 'Switch',
-                      style: const TextStyle(fontSize: 12, color: CupertinoColors.systemBlue),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: CupertinoColors.systemBlue,
+                      ),
                     ),
                   ),
                 ),
@@ -184,32 +192,43 @@ class _IconDemoPageState extends State<IconDemoPage> {
               children: [
                 CNIcon(
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/profile.svg' : 'assets/icons/home.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/profile.svg'
+                        : 'assets/icons/home.svg',
                   ),
                   size: 24,
                 ),
                 CNIcon(
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/chat.svg' : 'assets/icons/search.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/chat.svg'
+                        : 'assets/icons/search.svg',
                   ),
                   size: 32,
                 ),
                 CNIcon(
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/home.svg' : 'assets/icons/profile.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/home.svg'
+                        : 'assets/icons/profile.svg',
                   ),
                   size: 40,
                 ),
                 CNIcon(
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/search.svg' : 'assets/icons/chat.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/search.svg'
+                        : 'assets/icons/chat.svg',
                   ),
                   size: 48,
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            const Text('Debug: Testing with SF Symbol fallback', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+            const Text(
+              'Debug: Testing with SF Symbol fallback',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -217,7 +236,9 @@ class _IconDemoPageState extends State<IconDemoPage> {
                 CNIcon(
                   symbol: const CNSymbol('house.fill'),
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/profile.svg' : 'assets/icons/home.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/profile.svg'
+                        : 'assets/icons/home.svg',
                   ),
                   size: 24,
                 ),
@@ -225,7 +246,9 @@ class _IconDemoPageState extends State<IconDemoPage> {
                 CNIcon(
                   symbol: const CNSymbol('magnifyingglass'),
                   imageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/chat.svg' : 'assets/icons/search.svg'
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/chat.svg'
+                        : 'assets/icons/search.svg',
                   ),
                   size: 32,
                 ),
@@ -238,8 +261,8 @@ class _IconDemoPageState extends State<IconDemoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
                 CNIcon(
-                  symbol: CNSymbol('house.fill'),  // Fallback if not provided
-                  customIcon: CupertinoIcons.home,  // Custom IconData!
+                  symbol: CNSymbol('house.fill'), // Fallback if not provided
+                  customIcon: CupertinoIcons.home, // Custom IconData!
                   size: 24,
                 ),
                 CNIcon(

@@ -1208,12 +1208,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
     'assets/icons/coins.png',
   ];
 
-  final List<String> _iconNames = [
-    'heart',
-    'star',
-    'bookmark',
-    'bell',
-  ];
+  final List<String> _iconNames = ['heart', 'star', 'bookmark', 'bell'];
 
   final List<IconData> _customIcons = [
     CupertinoIcons.heart,
@@ -1248,7 +1243,8 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
 
   void _cycleCustomIcon() {
     setState(() {
-      _currentCustomIconIndex = (_currentCustomIconIndex + 1) % _customIcons.length;
+      _currentCustomIconIndex =
+          (_currentCustomIconIndex + 1) % _customIcons.length;
     });
   }
 
@@ -1269,10 +1265,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'Favorite Button (Main Use Case)',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1292,32 +1285,34 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
                     icon: CNSymbol(
                       _isFavorited ? 'heart.fill' : 'heart',
                       size: 20,
-                      color: _isFavorited ? CupertinoColors.systemRed : CupertinoColors.secondaryLabel,
+                      color: _isFavorited
+                          ? CupertinoColors.systemRed
+                          : CupertinoColors.secondaryLabel,
                     ),
                     onPressed: _toggleFavorite,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   // Image asset version
                   CNButton.icon(
                     imageAsset: CNImageAsset(
-                      _isFavorited ? 'assets/icons/checkcircle.png' : 'assets/icons/clock.png',
+                      _isFavorited
+                          ? 'assets/icons/checkcircle.png'
+                          : 'assets/icons/clock.png',
                       size: 20,
-                      color: _isFavorited ? CupertinoColors.systemGreen : CupertinoColors.secondaryLabel,
+                      color: _isFavorited
+                          ? CupertinoColors.systemGreen
+                          : CupertinoColors.secondaryLabel,
                     ),
                     onPressed: _toggleFavorite,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   // Custom icon version
                   CNButton.icon(
-                    customIcon: _isFavorited ? CupertinoIcons.heart_fill : CupertinoIcons.heart,
+                    customIcon: _isFavorited
+                        ? CupertinoIcons.heart_fill
+                        : CupertinoIcons.heart,
                     onPressed: _toggleFavorite,
-                    config: CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                 ],
               ),
@@ -1337,10 +1332,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'SVG Image Asset Path Change',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1359,9 +1351,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
                       size: 20,
                     ),
                     onPressed: _cycleImage,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -1388,10 +1378,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'PNG Image Asset Path Change',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1420,9 +1407,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
                       ][_currentPngIndex % _pngPaths.length],
                     ),
                     onPressed: _cyclePng,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -1449,10 +1434,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'SF Symbol Icon Change',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1468,9 +1450,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
                   CNButton.icon(
                     icon: CNSymbol(_iconNames[_currentIconIndex], size: 20),
                     onPressed: _cycleIcon,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -1497,10 +1477,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'Custom Icon Change',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1516,9 +1493,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
                   CNButton.icon(
                     customIcon: _customIcons[_currentCustomIconIndex],
                     onPressed: _cycleCustomIcon,
-                    config: const CNButtonConfig(
-                      style: CNButtonStyle.glass,
-                    ),
+                    config: const CNButtonConfig(style: CNButtonStyle.glass),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -1545,10 +1520,7 @@ class _ParameterChangeTestState extends State<_ParameterChangeTest> {
             children: [
               const Text(
                 'Button Group Parameter Changes',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -1638,8 +1610,12 @@ class _ButtonGroupTestState extends State<_ButtonGroupTest> {
 
     for (int i = 0; i < currentSet.length; i++) {
       final buttonData = currentSet[i];
-      final isFavorited = i == 0 ? _homeFavorited : (i == 1 ? _searchFavorited : _profileFavorited);
-      final onPressed = i == 0 ? _toggleHomeFavorite : (i == 1 ? _toggleSearchFavorite : _toggleProfileFavorite);
+      final isFavorited = i == 0
+          ? _homeFavorited
+          : (i == 1 ? _searchFavorited : _profileFavorited);
+      final onPressed = i == 0
+          ? _toggleHomeFavorite
+          : (i == 1 ? _toggleSearchFavorite : _toggleProfileFavorite);
 
       if (buttonData.containsKey('path')) {
         // Image asset button

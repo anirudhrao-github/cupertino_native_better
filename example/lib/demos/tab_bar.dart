@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'
-    show TabController, TabBarView, Colors;
+import 'package:flutter/material.dart' show TabController, TabBarView, Colors;
 import 'package:cupertino_native_better/cupertino_native_better.dart';
 
 class TabBarDemoPage extends StatefulWidget {
@@ -150,7 +149,9 @@ class _TabBarDemoPageState extends State<TabBarDemoPage>
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Icon(
-                  _useAlternateIcons ? CupertinoIcons.refresh : CupertinoIcons.arrow_2_squarepath,
+                  _useAlternateIcons
+                      ? CupertinoIcons.refresh
+                      : CupertinoIcons.arrow_2_squarepath,
                   color: CupertinoColors.white,
                   size: 24,
                 ),

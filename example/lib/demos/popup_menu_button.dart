@@ -37,38 +37,59 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
     final coloredItems = [
       CNPopupMenuItem(
         label: 'New File',
-        icon: const CNSymbol('doc.fill', size: 18, color: CupertinoColors.systemBlue),
+        icon: const CNSymbol(
+          'doc.fill',
+          size: 18,
+          color: CupertinoColors.systemBlue,
+        ),
       ),
       CNPopupMenuItem(
         label: 'New Folder',
-        icon: const CNSymbol('folder.fill', size: 18, color: CupertinoColors.systemYellow),
+        icon: const CNSymbol(
+          'folder.fill',
+          size: 18,
+          color: CupertinoColors.systemYellow,
+        ),
       ),
       const CNPopupMenuDivider(),
       CNPopupMenuItem(
         label: 'Share',
-        icon: const CNSymbol('square.and.arrow.up', size: 18, color: CupertinoColors.systemGreen),
+        icon: const CNSymbol(
+          'square.and.arrow.up',
+          size: 18,
+          color: CupertinoColors.systemGreen,
+        ),
       ),
       CNPopupMenuItem(
         label: 'Delete',
-        icon: const CNSymbol('trash.fill', size: 18, color: CupertinoColors.systemRed),
+        icon: const CNSymbol(
+          'trash.fill',
+          size: 18,
+          color: CupertinoColors.systemRed,
+        ),
       ),
     ];
 
     final customIconItems = [
       CNPopupMenuItem(
         label: 'Home',
-        customIcon: CupertinoIcons.home,  // Custom IconData!
-        iconColor: CupertinoColors.systemBlue,  // Tint the custom icon blue!
+        customIcon: CupertinoIcons.home, // Custom IconData!
+        iconColor: CupertinoColors.systemBlue, // Tint the custom icon blue!
       ),
       CNPopupMenuItem(
         label: 'Profile',
-        icon: const CNSymbol('person', size: 18, color: CupertinoColors.systemPurple),
+        icon: const CNSymbol(
+          'person',
+          size: 18,
+          color: CupertinoColors.systemPurple,
+        ),
       ),
       const CNPopupMenuDivider(),
       CNPopupMenuItem(
         label: 'Settings',
         customIcon: CupertinoIcons.settings,
-        iconColor: CupertinoColors.systemOrange,  // Different icon with different color!
+        iconColor: CupertinoColors
+            .systemOrange, // Different icon with different color!
       ),
     ];
 
@@ -76,30 +97,38 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
       CNPopupMenuItem(
         label: 'Home',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/profile.svg' : 'assets/icons/home.svg', 
-          size: 18
+          _useAlternateSvgIcons
+              ? 'assets/icons/profile.svg'
+              : 'assets/icons/home.svg',
+          size: 18,
         ),
       ),
       CNPopupMenuItem(
         label: 'Search',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/chat.svg' : 'assets/icons/search.svg', 
-          size: 18
+          _useAlternateSvgIcons
+              ? 'assets/icons/chat.svg'
+              : 'assets/icons/search.svg',
+          size: 18,
         ),
       ),
       const CNPopupMenuDivider(),
       CNPopupMenuItem(
         label: 'Profile',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/home.svg' : 'assets/icons/profile.svg', 
-          size: 18
+          _useAlternateSvgIcons
+              ? 'assets/icons/home.svg'
+              : 'assets/icons/profile.svg',
+          size: 18,
         ),
       ),
       CNPopupMenuItem(
         label: 'Chat',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/search.svg' : 'assets/icons/chat.svg', 
-          size: 18
+          _useAlternateSvgIcons
+              ? 'assets/icons/search.svg'
+              : 'assets/icons/chat.svg',
+          size: 18,
         ),
       ),
     ];
@@ -108,34 +137,42 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
       CNPopupMenuItem(
         label: 'Home',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/profile.svg' : 'assets/icons/home.svg', 
-          size: 18, 
-          color: CupertinoColors.systemBlue
+          _useAlternateSvgIcons
+              ? 'assets/icons/profile.svg'
+              : 'assets/icons/home.svg',
+          size: 18,
+          color: CupertinoColors.systemBlue,
         ),
       ),
       CNPopupMenuItem(
         label: 'Search',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/chat.svg' : 'assets/icons/search.svg', 
-          size: 18, 
-          color: CupertinoColors.systemGreen
+          _useAlternateSvgIcons
+              ? 'assets/icons/chat.svg'
+              : 'assets/icons/search.svg',
+          size: 18,
+          color: CupertinoColors.systemGreen,
         ),
       ),
       const CNPopupMenuDivider(),
       CNPopupMenuItem(
         label: 'Profile',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/home.svg' : 'assets/icons/profile.svg', 
-          size: 18, 
-          color: CupertinoColors.systemPurple
+          _useAlternateSvgIcons
+              ? 'assets/icons/home.svg'
+              : 'assets/icons/profile.svg',
+          size: 18,
+          color: CupertinoColors.systemPurple,
         ),
       ),
       CNPopupMenuItem(
         label: 'Chat',
         imageAsset: CNImageAsset(
-          _useAlternateSvgIcons ? 'assets/icons/search.svg' : 'assets/icons/chat.svg', 
-          size: 18, 
-          color: CupertinoColors.systemRed
+          _useAlternateSvgIcons
+              ? 'assets/icons/search.svg'
+              : 'assets/icons/chat.svg',
+          size: 18,
+          color: CupertinoColors.systemRed,
         ),
       ),
     ];
@@ -187,7 +224,11 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                 Text('Colored icons'),
                 Spacer(),
                 CNPopupMenuButton.icon(
-                  buttonIcon: const CNSymbol('paintbrush.fill', size: 18, color: CupertinoColors.systemPink),
+                  buttonIcon: const CNSymbol(
+                    'paintbrush.fill',
+                    size: 18,
+                    color: CupertinoColors.systemPink,
+                  ),
                   size: 44,
                   items: coloredItems,
                   onSelected: (index) {
@@ -205,7 +246,8 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                 Spacer(),
                 CNPopupMenuButton.icon(
                   buttonIcon: const CNSymbol('ellipsis', size: 18),
-                  buttonCustomIcon: CupertinoIcons.ellipsis_circle,  // Custom IconData!
+                  buttonCustomIcon:
+                      CupertinoIcons.ellipsis_circle, // Custom IconData!
                   size: 44,
                   items: customIconItems,
                   onSelected: (index) {
@@ -227,15 +269,23 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: CupertinoColors.systemBlue.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: CupertinoColors.systemBlue.withOpacity(0.3)),
+                      border: Border.all(
+                        color: CupertinoColors.systemBlue.withOpacity(0.3),
+                      ),
                     ),
                     child: Text(
                       _useAlternateSvgIcons ? 'Reset' : 'Switch',
-                      style: const TextStyle(fontSize: 12, color: CupertinoColors.systemBlue),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: CupertinoColors.systemBlue,
+                      ),
                     ),
                   ),
                 ),
@@ -248,8 +298,10 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                 CNPopupMenuButton.icon(
                   buttonIcon: const CNSymbol('ellipsis', size: 18),
                   buttonImageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/profile.svg' : 'assets/icons/home.svg', 
-                    size: 18
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/profile.svg'
+                        : 'assets/icons/home.svg',
+                    size: 18,
                   ),
                   size: 44,
                   items: svgItems,
@@ -269,9 +321,11 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                 CNPopupMenuButton.icon(
                   buttonIcon: const CNSymbol('ellipsis', size: 18),
                   buttonImageAsset: CNImageAsset(
-                    _useAlternateSvgIcons ? 'assets/icons/chat.svg' : 'assets/icons/search.svg', 
-                    size: 18, 
-                    color: CupertinoColors.systemBlue
+                    _useAlternateSvgIcons
+                        ? 'assets/icons/chat.svg'
+                        : 'assets/icons/search.svg',
+                    size: 18,
+                    color: CupertinoColors.systemBlue,
                   ),
                   size: 44,
                   items: coloredSvgItems,
@@ -293,25 +347,40 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
               children: [
                 CNPopupMenuButton.icon(
                   buttonIcon: const CNSymbol('ellipsis', size: 18),
-                  buttonImageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 18),
+                  buttonImageAsset: CNImageAsset(
+                    'assets/icons/checkcircle.png',
+                    size: 18,
+                  ),
                   size: 44,
                   items: [
                     CNPopupMenuItem(
                       label: 'Check',
-                      imageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 18),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/checkcircle.png',
+                        size: 18,
+                      ),
                     ),
                     CNPopupMenuItem(
                       label: 'Clock',
-                      imageAsset: CNImageAsset('assets/icons/clock.png', size: 18),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/clock.png',
+                        size: 18,
+                      ),
                     ),
                     const CNPopupMenuDivider(),
                     CNPopupMenuItem(
                       label: 'Close',
-                      imageAsset: CNImageAsset('assets/icons/close.png', size: 18),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/close.png',
+                        size: 18,
+                      ),
                     ),
                     CNPopupMenuItem(
                       label: 'Coins',
-                      imageAsset: CNImageAsset('assets/icons/coins.png', size: 18),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/coins.png',
+                        size: 18,
+                      ),
                     ),
                   ],
                   onSelected: (index) {
@@ -392,12 +461,18 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
               alignment: WrapAlignment.center,
               children: [
                 CNPopupMenuButton.icon(
-                  buttonImageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 12),
+                  buttonImageAsset: CNImageAsset(
+                    'assets/icons/checkcircle.png',
+                    size: 12,
+                  ),
                   size: 32,
                   items: [
                     CNPopupMenuItem(
                       label: 'Small',
-                      imageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 12),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/checkcircle.png',
+                        size: 12,
+                      ),
                     ),
                   ],
                   onSelected: (index) {
@@ -406,12 +481,18 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                   buttonStyle: CNButtonStyle.glass,
                 ),
                 CNPopupMenuButton.icon(
-                  buttonImageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 16),
+                  buttonImageAsset: CNImageAsset(
+                    'assets/icons/checkcircle.png',
+                    size: 16,
+                  ),
                   size: 36,
                   items: [
                     CNPopupMenuItem(
                       label: 'Medium',
-                      imageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 16),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/checkcircle.png',
+                        size: 16,
+                      ),
                     ),
                   ],
                   onSelected: (index) {
@@ -420,12 +501,18 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                   buttonStyle: CNButtonStyle.glass,
                 ),
                 CNPopupMenuButton.icon(
-                  buttonImageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 20),
+                  buttonImageAsset: CNImageAsset(
+                    'assets/icons/checkcircle.png',
+                    size: 20,
+                  ),
                   size: 44,
                   items: [
                     CNPopupMenuItem(
                       label: 'Large',
-                      imageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 20),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/checkcircle.png',
+                        size: 20,
+                      ),
                     ),
                   ],
                   onSelected: (index) {
@@ -434,12 +521,18 @@ class _PopupMenuButtonDemoPageState extends State<PopupMenuButtonDemoPage> {
                   buttonStyle: CNButtonStyle.glass,
                 ),
                 CNPopupMenuButton.icon(
-                  buttonImageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 24),
+                  buttonImageAsset: CNImageAsset(
+                    'assets/icons/checkcircle.png',
+                    size: 24,
+                  ),
                   size: 48,
                   items: [
                     CNPopupMenuItem(
                       label: 'XLarge',
-                      imageAsset: CNImageAsset('assets/icons/checkcircle.png', size: 24),
+                      imageAsset: CNImageAsset(
+                        'assets/icons/checkcircle.png',
+                        size: 24,
+                      ),
                     ),
                   ],
                   onSelected: (index) {

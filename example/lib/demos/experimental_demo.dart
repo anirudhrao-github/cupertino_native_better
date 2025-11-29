@@ -1,4 +1,3 @@
-
 import 'package:cupertino_native_better/components/experimental/glass_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +79,7 @@ class _ImplicitAnimationDemoState extends State<_ImplicitAnimationDemo> {
 
   @override
   Widget build(BuildContext context) {
-    // This is just a placeholder - to properly demo implicit animations, 
+    // This is just a placeholder - to properly demo implicit animations,
     // we'd need to use the actual widgets (CNButton, etc) and change their props.
     // Since I can't import CNButton here without circular deps or making this a real demo,
     // I'll leave it as a text description for now.
@@ -108,4 +107,3 @@ class _ImplicitAnimationDemoState extends State<_ImplicitAnimationDemo> {
     );
   }
 }
-

@@ -1,7 +1,5 @@
-import 'package:cupertino_native_better/components/floating_island.dart';
-import 'package:cupertino_native_better/components/search_bar.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:cupertino_native_better/cupertino_native_better.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('CNSearchBarController', () {

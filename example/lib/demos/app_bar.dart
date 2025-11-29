@@ -50,7 +50,6 @@ class AppBarDemoPage extends StatelessWidget {
               effect: CNGlassEffect.regular,
               tint: CupertinoColors.systemOrange,
               interactive: true,
-              
             ),
             const SizedBox(height: 24),
             const Text(

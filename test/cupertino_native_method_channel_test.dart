@@ -12,15 +12,15 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-        switch (methodCall.method) {
-          case 'getPlatformVersion':
-            return 'iOS 26.0';
-          case 'getMajorOSVersion':
-            return 26;
-          default:
-            return null;
-        }
-      });
+            switch (methodCall.method) {
+              case 'getPlatformVersion':
+                return 'iOS 26.0';
+              case 'getMajorOSVersion':
+                return 26;
+              default:
+                return null;
+            }
+          });
     });
 
     tearDown(() {
@@ -41,11 +41,8 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-        throw PlatformException(
-          code: 'ERROR',
-          message: 'Test error',
-        );
-      });
+            throw PlatformException(code: 'ERROR', message: 'Test error');
+          });
     });
 
     tearDown(() {
@@ -72,8 +69,8 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-        return null;
-      });
+            return null;
+          });
     });
 
     tearDown(() {
@@ -81,10 +78,12 @@ void main() {
           .setMockMethodCallHandler(channel, null);
     });
 
-    test('getPlatformVersion returns null when platform returns null',
-        () async {
-      expect(await platform.getPlatformVersion(), isNull);
-    });
+    test(
+      'getPlatformVersion returns null when platform returns null',
+      () async {
+        expect(await platform.getPlatformVersion(), isNull);
+      },
+    );
 
     test('getMajorOSVersion returns null when platform returns null', () async {
       expect(await platform.getMajorOSVersion(), isNull);

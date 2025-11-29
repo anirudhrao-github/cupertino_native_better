@@ -1,3 +1,11 @@
+## 1.1.8
+
+### Fixes
+
+- **Fixed**: Visual update - minor bug fixes and improvements
+
+---
+
 ## 1.1.7
 
 ### Fixes

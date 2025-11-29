@@ -42,19 +42,13 @@ void main() {
     });
 
     test('creates button with tint color', () {
-      final button = CNButtonData(
-        label: 'Colored',
-        tint: Colors.red,
-      );
+      final button = CNButtonData(label: 'Colored', tint: Colors.red);
 
       expect(button.tint, Colors.red);
     });
 
     test('creates disabled button', () {
-      final button = CNButtonData(
-        label: 'Disabled',
-        enabled: false,
-      );
+      final button = CNButtonData(label: 'Disabled', enabled: false);
 
       expect(button.enabled, false);
     });
@@ -77,10 +71,7 @@ void main() {
         borderRadius: 12.0,
         padding: const EdgeInsets.all(16),
       );
-      final button = CNButtonData(
-        label: 'Custom',
-        config: config,
-      );
+      final button = CNButtonData(label: 'Custom', config: config);
 
       expect(button.config.style, CNButtonStyle.prominentGlass);
       expect(button.config.minHeight, 56.0);
