@@ -1,3 +1,24 @@
+## 1.1.7
+
+### Fixes
+
+- **Fixed**: Split mode tab selection bug where the wrong tab appeared selected on first load
+  - **Issue**: When using `split: true` in CNTabBar, the right bar (e.g., Rewards tab) would incorrectly appear selected even when the left bar tab (e.g., Discover) was actually selected
+  - **Root Cause**: In the `refresh` method, when restoring selection after cycling through tabs for label rendering, the code was incorrectly setting `right.selectedItem = rightItems.first` when `rightOriginal` was nil
+  - **Solution**: Changed to restore the original selection directly (`right.selectedItem = rightOriginal`), which correctly keeps the right bar unselected when a left bar tab is active
+
+- **Fixed**: Added `setSelectedIndex` call after `refresh` in Flutter widget to ensure correct selection state after view initialization
+
+---
+
+## 1.1.6
+
+### Fixes
+
+- **Fixed**: Attempted fix for split mode tab selection (superseded by 1.1.7)
+
+---
+
 ## 1.1.5
 
 ### Breaking Changes
@@ -11,6 +32,14 @@
 - **Fixed**: Swift compiler error `'FocusState' is only available in iOS 15.0 or newer`
 - **Fixed**: Swift compiler error `'self' used before 'super.init' call` in CNSearchBar
 - **Fixed**: Pod installation issues when used in projects with iOS 15+ deployment target
+
+---
+
+## 1.1.4
+
+### Fixes
+
+- **Fixed**: Minor internal improvements
 
 ---
 

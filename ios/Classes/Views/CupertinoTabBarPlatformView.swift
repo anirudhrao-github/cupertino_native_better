@@ -218,6 +218,9 @@ class CupertinoTabBarPlatformView: NSObject, FlutterPlatformView, UITabBarDelega
       }
       // Force layout update for background and text rendering on iOS < 16
       // Re-assign items after layout to ensure labels render properly
+      // Capture selectedIndex for restoration after item re-assignment
+      let capturedSelectedIndex = selectedIndex
+      let capturedLeftEnd = leftEnd
       DispatchQueue.main.async { [weak self, weak left, weak right] in
         guard let self = self, let left = left, let right = right else { return }
         self.container.setNeedsLayout()
@@ -231,6 +234,17 @@ class CupertinoTabBarPlatformView: NSObject, FlutterPlatformView, UITabBarDelega
         let rightItems = right.items
         left.items = leftItems
         right.items = rightItems
+        // Restore selection after re-assigning items (re-assignment can reset selection)
+        if capturedSelectedIndex < capturedLeftEnd, let items = left.items, capturedSelectedIndex < items.count {
+          left.selectedItem = items[capturedSelectedIndex]
+          right.selectedItem = nil
+        } else if let items = right.items {
+          let idx = capturedSelectedIndex - capturedLeftEnd
+          if idx >= 0 && idx < items.count {
+            right.selectedItem = items[idx]
+            left.selectedItem = nil
+          }
+        }
         // Force another update cycle for text rendering
         DispatchQueue.main.async { [weak left, weak right] in
           guard let left = left, let right = right else { return }
@@ -534,6 +548,9 @@ channel.setMethodCallHandler { [weak self] call, result in
             }
             // Force layout update for background and text rendering on iOS < 16
             // Re-assign items after layout to ensure labels render properly
+            // Capture selectedIndex for restoration after item re-assignment
+            let capturedSelectedIndex = selectedIndex
+            let capturedLeftEnd = leftEnd
             DispatchQueue.main.async { [weak self, weak left, weak right] in
               guard let self = self, let left = left, let right = right else { return }
               self.container.setNeedsLayout()
@@ -547,6 +564,17 @@ channel.setMethodCallHandler { [weak self] call, result in
               let rightItems = right.items
               left.items = leftItems
               right.items = rightItems
+              // Restore selection after re-assigning items (re-assignment can reset selection)
+              if capturedSelectedIndex < capturedLeftEnd, let items = left.items, capturedSelectedIndex < items.count {
+                left.selectedItem = items[capturedSelectedIndex]
+                right.selectedItem = nil
+              } else if let items = right.items {
+                let idx = capturedSelectedIndex - capturedLeftEnd
+                if idx >= 0 && idx < items.count {
+                  right.selectedItem = items[idx]
+                  left.selectedItem = nil
+                }
+              }
               // Force another update cycle for text rendering
               DispatchQueue.main.async { [weak left, weak right] in
                 guard let left = left, let right = right else { return }
@@ -703,15 +731,11 @@ channel.setMethodCallHandler { [weak self] call, result in
                   selectNextLeft()
                 }
               } else {
-                // Restore original or first item
-                if let original = leftOriginal {
-                  left.selectedItem = original
-                } else {
-                  left.selectedItem = leftItems.first
-                }
+                // Restore original selection (nil means no selection on this bar)
+                left.selectedItem = leftOriginal
                 left.setNeedsLayout()
                 left.layoutIfNeeded()
-                
+
                 // Process right items
                 var rightIndex = 0
                 func selectNextRight() {
@@ -724,12 +748,8 @@ channel.setMethodCallHandler { [weak self] call, result in
                       selectNextRight()
                     }
                   } else {
-                    // Restore original or first item
-                    if let original = rightOriginal {
-                      right.selectedItem = original
-                    } else {
-                      right.selectedItem = rightItems.first
-                    }
+                    // Restore original selection (nil means no selection on this bar)
+                    right.selectedItem = rightOriginal
                     right.setNeedsLayout()
                     right.layoutIfNeeded()
                     // Restore delegates

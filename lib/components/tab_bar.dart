@@ -426,6 +426,8 @@ class _CNTabBarState extends State<CNTabBar> {
       Future.delayed(const Duration(milliseconds: 50), () {
         if (mounted && _channel != null) {
           _channel?.invokeMethod('refresh');
+          // Ensure correct selection after refresh (refresh can reset selection state)
+          _channel?.invokeMethod('setSelectedIndex', {'index': widget.currentIndex});
         }
       });
     }
