@@ -404,4 +404,362 @@ void main() {
       expect(CNGlassEffectShape.values, contains(CNGlassEffectShape.circle));
     });
   });
+
+  group('CNTabBarSearchItem', () {
+    test('creates search item with defaults', () {
+      const item = CNTabBarSearchItem();
+
+      expect(item.placeholder, 'Search');
+      expect(item.automaticallyActivatesSearch, true);
+      expect(item.icon, isNull);
+      expect(item.onSearchChanged, isNull);
+      expect(item.onSearchSubmit, isNull);
+      expect(item.onSearchActiveChanged, isNull);
+    });
+
+    test('creates search item with custom values', () {
+      const icon = CNSymbol('magnifyingglass');
+      var searchChangedCalled = false;
+      var searchSubmitCalled = false;
+      var searchActiveChangedCalled = false;
+
+      final item = CNTabBarSearchItem(
+        icon: icon,
+        placeholder: 'Find customer',
+        automaticallyActivatesSearch: false,
+        onSearchChanged: (_) => searchChangedCalled = true,
+        onSearchSubmit: (_) => searchSubmitCalled = true,
+        onSearchActiveChanged: (_) => searchActiveChangedCalled = true,
+      );
+
+      expect(item.icon, icon);
+      expect(item.placeholder, 'Find customer');
+      expect(item.automaticallyActivatesSearch, false);
+
+      item.onSearchChanged?.call('test');
+      item.onSearchSubmit?.call('test');
+      item.onSearchActiveChanged?.call(true);
+
+      expect(searchChangedCalled, true);
+      expect(searchSubmitCalled, true);
+      expect(searchActiveChangedCalled, true);
+    });
+
+    test('equality and hashCode', () {
+      const item1 = CNTabBarSearchItem(placeholder: 'Search');
+      const item2 = CNTabBarSearchItem(placeholder: 'Search');
+      const item3 = CNTabBarSearchItem(placeholder: 'Find');
+
+      expect(item1, equals(item2));
+      expect(item1.hashCode, equals(item2.hashCode));
+      expect(item1, isNot(equals(item3)));
+    });
+  });
+
+  group('CNTabBarSearchStyle', () {
+    test('creates style with defaults', () {
+      const style = CNTabBarSearchStyle();
+
+      expect(style.iconSize, isNull);
+      expect(style.iconColor, isNull);
+      expect(style.activeIconColor, isNull);
+      expect(style.searchBarBackgroundColor, isNull);
+      expect(style.searchBarTextColor, isNull);
+      expect(style.searchBarPlaceholderColor, isNull);
+      expect(style.clearButtonColor, isNull);
+      expect(style.buttonSize, isNull);
+      expect(style.searchBarHeight, isNull);
+      expect(style.searchBarBorderRadius, isNull);
+      expect(style.searchBarPadding, isNull);
+      expect(style.contentPadding, isNull);
+      expect(style.spacing, isNull);
+      expect(style.animationDuration, isNull);
+      expect(style.showClearButton, true);
+      expect(style.collapsedTabIcon, isNull);
+    });
+
+    test('creates style with custom values', () {
+      const style = CNTabBarSearchStyle(
+        iconSize: 24.0,
+        iconColor: Color(0xFF000000),
+        activeIconColor: Color(0xFF0000FF),
+        searchBarBackgroundColor: Color(0xFFFFFFFF),
+        searchBarTextColor: Color(0xFF333333),
+        searchBarPlaceholderColor: Color(0xFF999999),
+        clearButtonColor: Color(0xFF666666),
+        buttonSize: 48.0,
+        searchBarHeight: 50.0,
+        searchBarBorderRadius: 12.0,
+        searchBarPadding: EdgeInsets.all(16),
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        spacing: 16.0,
+        animationDuration: Duration(milliseconds: 500),
+        showClearButton: false,
+        collapsedTabIcon: CNSymbol('house'),
+      );
+
+      expect(style.iconSize, 24.0);
+      expect(style.iconColor, const Color(0xFF000000));
+      expect(style.activeIconColor, const Color(0xFF0000FF));
+      expect(style.searchBarBackgroundColor, const Color(0xFFFFFFFF));
+      expect(style.searchBarTextColor, const Color(0xFF333333));
+      expect(style.searchBarPlaceholderColor, const Color(0xFF999999));
+      expect(style.clearButtonColor, const Color(0xFF666666));
+      expect(style.buttonSize, 48.0);
+      expect(style.searchBarHeight, 50.0);
+      expect(style.searchBarBorderRadius, 12.0);
+      expect(style.searchBarPadding, const EdgeInsets.all(16));
+      expect(
+        style.contentPadding,
+        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      );
+      expect(style.spacing, 16.0);
+      expect(style.animationDuration, const Duration(milliseconds: 500));
+      expect(style.showClearButton, false);
+      expect(style.collapsedTabIcon?.name, 'house');
+    });
+
+    test('equality and hashCode', () {
+      const style1 = CNTabBarSearchStyle(iconSize: 20.0);
+      const style2 = CNTabBarSearchStyle(iconSize: 20.0);
+      const style3 = CNTabBarSearchStyle(iconSize: 24.0);
+
+      expect(style1, equals(style2));
+      expect(style1.hashCode, equals(style2.hashCode));
+      expect(style1, isNot(equals(style3)));
+    });
+
+    test('search item uses style', () {
+      const style = CNTabBarSearchStyle(
+        iconSize: 22.0,
+        buttonSize: 46.0,
+        showClearButton: false,
+      );
+      const item = CNTabBarSearchItem(
+        placeholder: 'Custom Search',
+        style: style,
+      );
+
+      expect(item.style.iconSize, 22.0);
+      expect(item.style.buttonSize, 46.0);
+      expect(item.style.showClearButton, false);
+    });
+  });
+
+  group('CNTabBarSearchController', () {
+    test('creates controller with defaults', () {
+      final controller = CNTabBarSearchController();
+
+      expect(controller.text, '');
+      expect(controller.isActive, false);
+    });
+
+    test('text setter notifies listeners', () {
+      final controller = CNTabBarSearchController();
+      var notified = false;
+
+      controller.addListener(() => notified = true);
+      controller.text = 'test query';
+
+      expect(notified, true);
+      expect(controller.text, 'test query');
+    });
+
+    test('activateSearch sets isActive to true', () {
+      final controller = CNTabBarSearchController();
+      var notified = false;
+
+      controller.addListener(() => notified = true);
+      controller.activateSearch();
+
+      expect(notified, true);
+      expect(controller.isActive, true);
+    });
+
+    test('deactivateSearch sets isActive to false', () {
+      final controller = CNTabBarSearchController();
+      controller.activateSearch();
+
+      var notified = false;
+      controller.addListener(() => notified = true);
+      controller.deactivateSearch();
+
+      expect(notified, true);
+      expect(controller.isActive, false);
+    });
+
+    test('clear clears text and optionally deactivates', () {
+      final controller = CNTabBarSearchController();
+      controller.text = 'query';
+      controller.activateSearch();
+
+      controller.clear();
+      expect(controller.text, '');
+      expect(controller.isActive, true);
+
+      controller.text = 'another query';
+      controller.clear(deactivate: true);
+      expect(controller.text, '');
+      expect(controller.isActive, false);
+    });
+
+    test('updateFromNative updates state', () {
+      final controller = CNTabBarSearchController();
+      var notified = false;
+
+      controller.addListener(() => notified = true);
+      controller.updateFromNative(text: 'native text', isActive: true);
+
+      expect(notified, true);
+      expect(controller.text, 'native text');
+      expect(controller.isActive, true);
+    });
+
+    test('dispose works correctly', () {
+      final controller = CNTabBarSearchController();
+      controller.dispose();
+      // Should not throw
+    });
+  });
+
+  group('CNTabBar with search', () {
+    testWidgets('renders tab bar with search item (Flutter fallback)', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              height: 60,
+              child: CNTabBar(
+                items: [
+                  CNTabBarItem(label: 'Home', icon: CNSymbol('house')),
+                  CNTabBarItem(label: 'Settings', icon: CNSymbol('gear')),
+                ],
+                currentIndex: 0,
+                onTap: (_) {},
+                searchItem: CNTabBarSearchItem(
+                  placeholder: 'Search',
+                  onSearchChanged: (_) {},
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump();
+
+      // On non-iOS platforms with search, custom fallback layout is rendered
+      // (not CupertinoTabBar, but a Row-based layout with search)
+      expect(find.byType(Row), findsWidgets);
+      // Should find the search icon (magnifyingglass)
+      expect(find.byType(GestureDetector), findsWidgets);
+    });
+
+    testWidgets('renders regular tab bar without search item', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CNTabBar(
+              items: [
+                CNTabBarItem(label: 'Home', icon: CNSymbol('house')),
+                CNTabBarItem(label: 'Profile', icon: CNSymbol('person')),
+                CNTabBarItem(label: 'Settings', icon: CNSymbol('gear')),
+              ],
+              currentIndex: 0,
+              onTap: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump();
+
+      expect(find.byType(CupertinoTabBar), findsOneWidget);
+    });
+
+    testWidgets('handles tab selection', (tester) async {
+      var selectedIndex = 0;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CNTabBar(
+              items: [
+                CNTabBarItem(label: 'Home', icon: CNSymbol('house')),
+                CNTabBarItem(label: 'Settings', icon: CNSymbol('gear')),
+              ],
+              currentIndex: selectedIndex,
+              onTap: (index) => selectedIndex = index,
+            ),
+          ),
+        ),
+      );
+
+      await tester.pump();
+
+      // The fallback CupertinoTabBar should be rendered
+      expect(find.byType(CupertinoTabBar), findsOneWidget);
+    });
+  });
+
+  group('CNTabBarItem', () {
+    test('creates item with SF Symbol', () {
+      const icon = CNSymbol('house');
+      const item = CNTabBarItem(label: 'Home', icon: icon);
+
+      expect(item.label, 'Home');
+      expect(item.icon, icon);
+      expect(item.badge, isNull);
+    });
+
+    test('creates item with badge', () {
+      const item = CNTabBarItem(
+        label: 'Messages',
+        icon: CNSymbol('message'),
+        badge: '5',
+      );
+
+      expect(item.label, 'Messages');
+      expect(item.badge, '5');
+    });
+
+    test('creates item with active icon', () {
+      const icon = CNSymbol('house');
+      const activeIcon = CNSymbol('house.fill');
+      const item = CNTabBarItem(
+        label: 'Home',
+        icon: icon,
+        activeIcon: activeIcon,
+      );
+
+      expect(item.icon, icon);
+      expect(item.activeIcon, activeIcon);
+    });
+
+    test('creates item with image asset', () {
+      final asset = CNImageAsset('assets/icon.png');
+      final activeAsset = CNImageAsset('assets/icon_active.png');
+      final item = CNTabBarItem(
+        label: 'Custom',
+        imageAsset: asset,
+        activeImageAsset: activeAsset,
+      );
+
+      expect(item.imageAsset, asset);
+      expect(item.activeImageAsset, activeAsset);
+    });
+
+    test('creates item with custom IconData', () {
+      const item = CNTabBarItem(
+        label: 'Custom',
+        customIcon: Icons.home,
+        activeCustomIcon: Icons.home_filled,
+      );
+
+      expect(item.customIcon, Icons.home);
+      expect(item.activeCustomIcon, Icons.home_filled);
+    });
+  });
 }

@@ -1,3 +1,47 @@
+## 1.2.0
+
+### New Features
+
+- **Added**: iOS 26 Search Tab Feature for CNTabBar with animated Liquid Glass expansion
+  - Native `UISearchTab`-style search integration that follows Apple's iOS 26 design
+  - Search button expands into a full search bar with smooth spring animation
+  - Tabs collapse to icon-only mode when search is active
+  - Full Flutter fallback for iOS < 26 with identical behavior
+
+- **Added**: `CNTabBarSearchItem` configuration class for search tab customization
+  - `placeholder`: Custom placeholder text for the search field
+  - `onSearchChanged`: Callback for live filtering as user types
+  - `onSearchSubmit`: Callback when user submits search
+  - `onSearchActiveChanged`: Callback for expand/collapse state changes
+  - `automaticallyActivatesSearch`: Control keyboard auto-activation behavior
+
+- **Added**: `CNTabBarSearchStyle` for visual customization
+  - Icon sizes, colors, and active states
+  - Search bar dimensions, padding, and border radius
+  - Animation duration control
+  - Clear button visibility toggle
+
+- **Added**: `CNTabBarSearchController` for programmatic search control
+  - `activateSearch()` / `deactivateSearch()`: Expand/collapse search programmatically
+  - `text` property: Get/set search text
+  - `clear()`: Clear search text with optional deactivation
+  - Listener support for reactive state management
+
+### Improvements
+
+- **Enhanced**: `automaticallyActivatesSearch` now properly controls keyboard behavior
+  - When `false`: Search bar expands but keyboard only opens when user taps the text field
+  - When `true` (default): Keyboard opens automatically when search expands
+  - Mirrors `UISearchTab.automaticallyActivatesSearch` from UIKit
+
+### Bug Fixes
+
+- **Fixed**: `MissingPluginException` errors during hot reload for `setItems` and `refresh` methods
+  - Added try-catch error handling to prevent crashes during development
+  - Search view now handles all expected method channel calls
+
+---
+
 ## 1.1.9
 
 ### New Features

@@ -200,13 +200,67 @@ CNTabBar(
 )
 ```
 
+### Tab Bar with iOS 26 Search Tab
+
+The `CNTabBar` supports iOS 26's native search tab feature with animated expansion:
+
+```dart
+CNTabBar(
+  items: [
+    CNTabBarItem(
+      label: 'Overview',
+      icon: CNSymbol('square.grid.2x2.fill'),
+    ),
+    CNTabBarItem(
+      label: 'Projects',
+      icon: CNSymbol('folder'),
+      activeIcon: CNSymbol('folder.fill'),
+    ),
+  ],
+  currentIndex: _index,
+  onTap: (i) => setState(() => _index = i),
+  // iOS 26 Search Tab Feature
+  searchItem: CNTabBarSearchItem(
+    placeholder: 'Find customer',
+    // Control keyboard auto-activation
+    automaticallyActivatesSearch: false, // Keyboard only opens on text field tap
+    onSearchChanged: (query) {
+      // Live filtering as user types
+    },
+    onSearchSubmit: (query) {
+      // Handle search submission
+    },
+    onSearchActiveChanged: (isActive) {
+      // React to search expand/collapse
+    },
+    style: const CNTabBarSearchStyle(
+      iconSize: 20,
+      buttonSize: 44,
+      searchBarHeight: 44,
+      animationDuration: Duration(milliseconds: 400),
+      showClearButton: true,
+    ),
+  ),
+  searchController: _searchController, // Optional programmatic control
+)
+```
+
+#### automaticallyActivatesSearch
+
+Controls whether the keyboard opens automatically when the search tab expands:
+
+- `true` (default): Tapping the search button expands the bar AND opens the keyboard
+- `false`: Tapping the search button only expands the bar; keyboard opens when user taps the text field
+
+This mirrors `UISearchTab.automaticallyActivatesSearch` from UIKit.
+
 ## Installation
 
 Add to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cupertino_native_better: ^1.1.5
+  cupertino_native_better: ^1.2.0
 ```
 
 ## Usage
@@ -471,7 +525,7 @@ print('macOS version: ${PlatformVersion.macOSVersion}');
    cupertino_native_plus: ^x.x.x
 
    # After
-   cupertino_native_better: ^1.1.5
+   cupertino_native_better: ^1.2.0
    ```
 
 2. Update imports:

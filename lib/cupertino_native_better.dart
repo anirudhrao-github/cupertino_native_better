@@ -73,6 +73,7 @@ export 'style/sf_symbol.dart';
 export 'style/image_placement.dart';
 export 'style/glass_effect.dart';
 export 'style/spotlight_mode.dart';
+export 'style/tab_bar_search_item.dart';
 
 // Utilities
 export 'utils/version_detector.dart';
