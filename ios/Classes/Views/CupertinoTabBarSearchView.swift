@@ -319,11 +319,9 @@ class CupertinoTabBarSearchPlatformView: NSObject, FlutterPlatformView, UITabBar
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         // Check if search item was tapped
         if item.tag == 9999 {
-            // Restore previous selection visually
-            if let items = tabBar.items, selectedIndex >= 0, selectedIndex < items.count, selectedIndex != searchItemIndex {
-                tabBar.selectedItem = items[selectedIndex]
-            }
-            // Notify Flutter to show search UI
+            // Don't restore previous selection - let search tab stay selected
+            // This matches adaptive_platform_ui behavior
+            // Notify Flutter search was activated
             channel.invokeMethod("searchActiveChanged", arguments: ["isActive": true])
             return
         }

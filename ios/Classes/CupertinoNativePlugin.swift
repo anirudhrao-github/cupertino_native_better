@@ -7,6 +7,9 @@ public class CupertinoNativePlugin: NSObject, FlutterPlugin {
     let instance = CupertinoNativePlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
 
+    // Setup native tab bar manager (runtime check inside)
+    CNNativeTabBarManager.shared.setup(messenger: registrar.messenger())
+
     // Register platform view factories
     let sliderFactory = CupertinoSliderViewFactory(messenger: registrar.messenger())
     registrar.register(sliderFactory, withId: "CupertinoNativeSlider")

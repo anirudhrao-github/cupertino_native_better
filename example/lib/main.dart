@@ -10,6 +10,7 @@ import 'demos/button.dart';
 import 'demos/overlay_test.dart';
 import 'demos/app_bar.dart';
 import 'demos/issues_test.dart';
+import 'demos/native_tab_bar_demo.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -208,6 +209,18 @@ class HomePage extends StatelessWidget {
           CupertinoListSection.insetGrouped(
             header: Text('Navigation'),
             children: [
+              CupertinoListTile(
+                title: Text('Native Tab Bar (iOS 26)'),
+                leading: CNIcon(
+                  symbol: CNSymbol('dock.rectangle', color: accentColor),
+                ),
+                trailing: CupertinoListTileChevron(),
+                onTap: () {
+                  Navigator.of(context).push(
+                    CupertinoPageRoute(builder: (_) => const NativeTabBarDemoPage()),
+                  );
+                },
+              ),
               CupertinoListTile(
                 title: Text('Tab Bar'),
                 leading: CNIcon(

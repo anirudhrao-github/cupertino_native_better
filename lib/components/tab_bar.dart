@@ -9,6 +9,7 @@ import '../utils/icon_renderer.dart';
 import '../utils/version_detector.dart';
 import '../utils/theme_helper.dart';
 import 'icon.dart';
+import 'native_tab_bar.dart';
 
 /// Immutable data describing a single tab bar item.
 class CNTabBarItem {
@@ -315,10 +316,9 @@ class _CNTabBarState extends State<CNTabBar> {
             if (!snapshot.hasData) {
               return SizedBox(height: widget.height);
             }
-            // If search is active and we have a searchItem, show Flutter search overlay
-            if (_isSearchActive && _hasSearch) {
-              return _buildNativeWithSearchOverlay(context, snapshot.data!);
-            }
+            // Keep native tab bar visible at all times
+            // Search UI should be handled in app content area, not as tab bar overlay
+            // This matches adaptive_platform_ui behavior
             return snapshot.data!;
           },
         );
@@ -333,15 +333,19 @@ class _CNTabBarState extends State<CNTabBar> {
     final buttonSize = style.buttonSize ?? 44.0;
     final iconSize = style.iconSize ?? 20.0;
     final spacing = style.spacing ?? 12.0;
-    final searchBarHeight = style.searchBarHeight ?? 44.0;
+    final searchBarHeight = style.searchBarHeight ?? 36.0;
     // Calculate proper height to fit search bar without clipping
     final contentPadding =
         style.contentPadding ??
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 4);
-    final totalHeight = searchBarHeight + contentPadding.vertical;
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 6);
+    // Use the larger of widget.height or calculated height
+    final calculatedHeight = searchBarHeight + contentPadding.vertical;
+    final effectiveHeight = widget.height != null
+        ? (widget.height! > calculatedHeight ? widget.height! : calculatedHeight)
+        : calculatedHeight;
 
     return Container(
-      height: widget.height ?? totalHeight,
+      height: effectiveHeight,
       padding: contentPadding,
       child: Row(
         children: [
@@ -952,8 +956,11 @@ class _CNTabBarState extends State<CNTabBar> {
     final currentIcon = currentItem.icon?.name ??
         currentItem.activeIcon?.name ??
         'circle';
+    // Match search bar height (36px default)
+    final indicatorHeight = style.searchBarHeight ?? 36.0;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque, // Ensure tap is detected
       onTap: () {
         // Unfocus and close keyboard first
         _searchFocusNode?.unfocus();
@@ -967,19 +974,20 @@ class _CNTabBarState extends State<CNTabBar> {
         _channel?.invokeMethod('deactivateSearch');
       },
       child: Container(
-        height: buttonSize,
+        height: indicatorHeight,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: CupertinoColors.systemGrey6.resolveFrom(context),
-          borderRadius: BorderRadius.circular(buttonSize / 2),
+          borderRadius: BorderRadius.circular(indicatorHeight / 2),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Show current tab icon
             CNIcon(
               symbol: CNSymbol(currentIcon),
-              size: iconSize,
+              size: iconSize * 0.9,
               color: tintColor,
             ),
             if (currentItem.label != null && currentItem.label!.isNotEmpty) ...[
@@ -987,7 +995,7 @@ class _CNTabBarState extends State<CNTabBar> {
               Text(
                 currentItem.label!,
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                   color: tintColor,
                 ),
@@ -997,7 +1005,7 @@ class _CNTabBarState extends State<CNTabBar> {
             // Chevron down to indicate tap to dismiss
             Icon(
               CupertinoIcons.chevron_down,
-              size: 12,
+              size: 11,
               color: CupertinoColors.secondaryLabel.resolveFrom(context),
             ),
           ],
@@ -1147,17 +1155,17 @@ class _CNTabBarState extends State<CNTabBar> {
     final searchSymbol = widget.searchItem?.icon?.name ?? 'magnifyingglass';
     final padding =
         style.searchBarPadding ??
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 10);
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
 
     return Expanded(
       child: Container(
-        height: style.searchBarHeight ?? 44,
+        height: style.searchBarHeight ?? 36,
         decoration: BoxDecoration(
           color:
               style.searchBarBackgroundColor ??
               CupertinoColors.systemGrey6.resolveFrom(context),
           borderRadius: BorderRadius.circular(
-            style.searchBarBorderRadius ?? (style.searchBarHeight ?? 44) / 2,
+            style.searchBarBorderRadius ?? (style.searchBarHeight ?? 36) / 2,
           ),
         ),
         padding: padding,
