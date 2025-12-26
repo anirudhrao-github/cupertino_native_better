@@ -208,7 +208,8 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
         paddingHorizontal: paddingHorizontal,
         paddingVertical: paddingVertical,
         minHeight: minHeight,
-        spacing: imagePadding
+        spacing: imagePadding,
+        badgeCount: badgeCount
       )
     } else {
       // Use UIKit button for standard implementation
@@ -541,7 +542,8 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
     paddingHorizontal: CGFloat?,
     paddingVertical: CGFloat?,
     minHeight: CGFloat?,
-    spacing: CGFloat?
+    spacing: CGFloat?,
+    badgeCount: Int?
   ) {
     // Create GlassButtonConfig with provided values or defaults
     let config = GlassButtonConfig(
