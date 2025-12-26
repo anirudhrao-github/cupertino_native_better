@@ -20,7 +20,8 @@ struct GlassButtonSwiftUI: View {
   let glassEffectInteractive: Bool
   @Namespace private var namespace
   let config: GlassButtonConfig
-  
+  let badgeCount: Int?
+
   var body: some View {
     Button(action: onPressed) {
       HStack(spacing: config.spacing) {
@@ -50,6 +51,7 @@ struct GlassButtonSwiftUI: View {
     }
     .disabled(!isEnabled)
     .buttonStyle(NoHighlightButtonStyle())
+    .badge(badgeCount != nil && badgeCount! > 0 ? (badgeCount! > 99 ? "99+" : "\(badgeCount!)") : nil)
   }
   
   private func glassEffectForStyle(_ style: String, interactive: Bool) -> Glass {

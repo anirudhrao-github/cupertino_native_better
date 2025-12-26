@@ -559,7 +559,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
     // Create a wrapper view that provides a namespace for the button
     struct ButtonWrapperView: View {
       @Namespace private var namespace
-      
+
       let title: String?
       let iconName: String?
       let iconImage: UIImage?
@@ -574,7 +574,8 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
       let glassEffectId: String?
       let glassEffectInteractive: Bool
       let config: GlassButtonConfig
-      
+      let badgeCount: Int?
+
       var body: some View {
         GlassButtonSwiftUI(
           title: title,
@@ -591,7 +592,8 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
           glassEffectId: glassEffectId,
           glassEffectInteractive: glassEffectInteractive,
           namespace: namespace,
-          config: config
+          config: config,
+          badgeCount: badgeCount
         )
       }
     }
@@ -612,7 +614,8 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
       glassEffectUnionId: glassEffectUnionId,
       glassEffectId: glassEffectId,
       glassEffectInteractive: glassEffectInteractive,
-      config: config
+      config: config,
+      badgeCount: badgeCount
     )
     
     let hostingController = UIHostingController(rootView: AnyView(swiftUIButton))

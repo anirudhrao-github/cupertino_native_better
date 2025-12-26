@@ -484,7 +484,7 @@ class CupertinoButtonNSView: NSView {
     // Create a wrapper view that provides a namespace for the button
     struct ButtonWrapperView: View {
       @Namespace private var namespace
-      
+
       let title: String?
       let iconName: String?
       let iconImage: NSImage?
@@ -499,7 +499,8 @@ class CupertinoButtonNSView: NSView {
       let glassEffectId: String?
       let glassEffectInteractive: Bool
       let config: GlassButtonConfig
-      
+      let badgeCount: Int?
+
       var body: some View {
         GlassButtonSwiftUI(
           title: title,
@@ -516,7 +517,8 @@ class CupertinoButtonNSView: NSView {
           glassEffectId: glassEffectId,
           glassEffectInteractive: glassEffectInteractive,
           namespace: namespace,
-          config: config
+          config: config,
+          badgeCount: badgeCount
         )
       }
     }
@@ -537,7 +539,8 @@ class CupertinoButtonNSView: NSView {
       glassEffectUnionId: glassEffectUnionId,
       glassEffectId: glassEffectId,
       glassEffectInteractive: glassEffectInteractive,
-      config: config
+      config: config,
+      badgeCount: badgeCount
     )
     
     let hostingController = NSHostingController(rootView: AnyView(swiftUIButton))
