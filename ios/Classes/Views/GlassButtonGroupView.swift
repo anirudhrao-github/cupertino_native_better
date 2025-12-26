@@ -44,7 +44,8 @@ struct GlassButtonGroupSwiftUI: View {
               glassEffectId: button.glassEffectId,
               glassEffectInteractive: button.glassEffectInteractive,
               namespace: namespace,
-              config: button.config
+              config: button.config,
+              badgeCount: button.badgeCount
             )
           }
         }
@@ -67,7 +68,8 @@ struct GlassButtonGroupSwiftUI: View {
               glassEffectId: button.glassEffectId,
               glassEffectInteractive: button.glassEffectInteractive,
               namespace: namespace,
-              config: button.config
+              config: button.config,
+              badgeCount: button.badgeCount
             )
           }
         }
@@ -96,6 +98,7 @@ struct GlassButtonData: Identifiable {
   let glassEffectId: String?
   let glassEffectInteractive: Bool
   let config: GlassButtonConfig
+  let badgeCount: Int?
 }
 
 @available(iOS 26.0, *)
@@ -154,7 +157,8 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
           let glassEffectUnionId = buttonDict["glassEffectUnionId"] as? String
           let glassEffectId = buttonDict["glassEffectId"] as? String
           let glassEffectInteractive = (buttonDict["glassEffectInteractive"] as? NSNumber)?.boolValue ?? false
-          
+          let badgeCount = (buttonDict["badgeCount"] as? NSNumber)?.intValue
+
           // Load image from asset path, bytes, or icon bytes
           var iconImage: UIImage? = nil
           
@@ -256,7 +260,8 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
             glassEffectUnionId: glassEffectUnionId,
             glassEffectId: glassEffectId,
             glassEffectInteractive: glassEffectInteractive,
-            config: config
+            config: config,
+            badgeCount: badgeCount
           )
           buttons.append(buttonData)
         }
@@ -362,10 +367,11 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     let glassEffectUnionId = buttonDict["glassEffectUnionId"] as? String
     let glassEffectId = buttonDict["glassEffectId"] as? String
     let glassEffectInteractive = (buttonDict["glassEffectInteractive"] as? NSNumber)?.boolValue ?? false
-    
+    let badgeCount = (buttonDict["badgeCount"] as? NSNumber)?.intValue
+
     // Load image from asset path, bytes, or icon bytes
     var iconImage: UIImage? = nil
-    
+
     // Try asset path first
     if let assetPath = buttonDict["assetPath"] as? String, !assetPath.isEmpty {
       let format = buttonDict["imageFormat"] as? String
@@ -455,9 +461,10 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
       glassEffectUnionId: glassEffectUnionId,
       glassEffectId: glassEffectId,
       glassEffectInteractive: glassEffectInteractive,
-      config: config
+      config: config,
+      badgeCount: badgeCount
     )
-    
+
     viewModel.updateButton(at: index, with: buttonData)
   }
   
@@ -476,9 +483,10 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
       let glassEffectUnionId = buttonDict["glassEffectUnionId"] as? String
       let glassEffectId = buttonDict["glassEffectId"] as? String
       let glassEffectInteractive = (buttonDict["glassEffectInteractive"] as? NSNumber)?.boolValue ?? false
-      
+      let badgeCount = (buttonDict["badgeCount"] as? NSNumber)?.intValue
+
       var iconImage: UIImage? = nil
-      
+
       if let assetPath = buttonDict["assetPath"] as? String, !assetPath.isEmpty {
         let format = buttonDict["imageFormat"] as? String
         let size = CGSize(width: iconSize, height: iconSize)
@@ -566,7 +574,8 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
         glassEffectUnionId: glassEffectUnionId,
         glassEffectId: glassEffectId,
         glassEffectInteractive: glassEffectInteractive,
-        config: config
+        config: config,
+        badgeCount: badgeCount
       )
       newButtons.append(buttonData)
     }
