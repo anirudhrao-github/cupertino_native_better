@@ -196,16 +196,15 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
   private var badgeViews: [UIKitBadgeView] = []
   private var axis: Axis = .horizontal
   private var spacing: CGFloat = 8.0
-  private var displayLink: CADisplayLink?
   
   init(frame: CGRect, viewId: Int64, args: Any?, messenger: FlutterBinaryMessenger) {
     // Initialize container with frame provided by Flutter
     // Flutter manages the frame position and size
     self.container = UIView(frame: frame)
     self.container.backgroundColor = .clear
-    
-    // Ensure container doesn't clip content
-    self.container.clipsToBounds = true
+
+    // Ensure container doesn't clip content (Flutter's ClipRect handles clipping)
+    self.container.clipsToBounds = false
     // Remove any default layout margins that could cause offset
     if #available(iOS 11.0, *) {
       self.container.insetsLayoutMarginsFromSafeArea = false
@@ -395,12 +394,13 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     
     hostingController.view.translatesAutoresizingMaskIntoConstraints = false
     container.addSubview(hostingController.view)
-    
-    // Use exact constraints with no offset to ensure precise positioning
+
+    // Position hosting controller 3px down to leave room for badge overflow at top
+    // This ensures badges positioned at badgeY = -3 are still within container bounds
     NSLayoutConstraint.activate([
       hostingController.view.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 0),
       hostingController.view.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
-      hostingController.view.topAnchor.constraint(equalTo: container.topAnchor, constant: 0),
+      hostingController.view.topAnchor.constraint(equalTo: container.topAnchor, constant: 3),
       hostingController.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
     ])
     
@@ -416,9 +416,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
       self?.updateBadgePositions()
     }
-
-    // Start monitoring for navigation transitions
-    startTransitionMonitoring()
 
     // Set up method channel handler for updates
     channel.setMethodCallHandler { [weak self] call, result in
@@ -726,12 +723,12 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
         // Horizontal layout: divide width by button count
         let buttonWidth = containerBounds.width / CGFloat(buttonCount)
         badgeX = (buttonWidth * CGFloat(index)) + buttonWidth - 12 // Closer to button edge
-        badgeY = -3 // Slight overlap at top
+        badgeY = 0 // Position at top - buttons are offset by 3px, so badge appears with -3px overlap
       } else {
         // Vertical layout: divide height by button count
         let buttonHeight = containerBounds.height / CGFloat(buttonCount)
         badgeX = containerBounds.width - 12 // Closer to right edge
-        badgeY = (buttonHeight * CGFloat(index)) - 3 // Slight overlap at top
+        badgeY = (buttonHeight * CGFloat(index)) + 3 // Account for hosting controller 3px offset
       }
 
       NSLayoutConstraint.activate([
@@ -772,70 +769,7 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     }
   }
 
-  // MARK: - Navigation Transition Detection
-
-  private func startTransitionMonitoring() {
-    // Use CADisplayLink to monitor layer changes on every frame
-    displayLink = CADisplayLink(target: self, selector: #selector(checkForTransition))
-    displayLink?.add(to: .main, forMode: .common)
-  }
-
-  @objc private func checkForTransition() {
-    // Detect if the view is being rendered into an offscreen context (navigation transition)
-    // During transitions, the layer's contents scale or the view hierarchy changes
-    let isInTransition = isViewInTransition()
-
-    // Enable clipping during transitions to prevent partial badge visibility
-    if container.clipsToBounds != isInTransition {
-      container.clipsToBounds = isInTransition
-    }
-  }
-
-  private func isViewInTransition() -> Bool {
-    // Check multiple indicators of transition state
-
-    // 1. Check if the view's window is nil (being removed from hierarchy)
-    guard let window = container.window else {
-      return true // Assume transition if no window
-    }
-
-    // 2. Check if any parent view controller is transitioning
-    if let viewController = findParentViewController() {
-      if viewController.isBeingPresented || viewController.isBeingDismissed ||
-         viewController.isMovingToParent || viewController.isMovingFromParent {
-        return true
-      }
-
-      // Check if the navigation controller is transitioning
-      if let navigationController = viewController.navigationController,
-         let transitionCoordinator = navigationController.transitionCoordinator,
-         transitionCoordinator.isAnimated {
-        return true
-      }
-    }
-
-    // 3. Check if the layer is being flattened (composited into texture for animation)
-    if container.layer.isHidden || container.layer.opacity < 1.0 {
-      return true
-    }
-
-    return false
-  }
-
-  private func findParentViewController() -> UIViewController? {
-    var responder: UIResponder? = container
-    while let nextResponder = responder?.next {
-      if let viewController = nextResponder as? UIViewController {
-        return viewController
-      }
-      responder = nextResponder
-    }
-    return nil
-  }
-
   deinit {
-    displayLink?.invalidate()
-    displayLink = nil
     badgeViews.forEach { $0.removeFromSuperview() }
     container.removeObserver(self, forKeyPath: "frame")
     container.removeObserver(self, forKeyPath: "bounds")

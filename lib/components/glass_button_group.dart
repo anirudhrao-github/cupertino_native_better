@@ -175,13 +175,16 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
 
         if (widget.axis == Axis.horizontal) {
           final buttonHeight = _getEffectiveMinHeight();
+          // Add 3px to height to accommodate badge overflow at top
+          // Native side offsets buttons by 3px to keep badge within bounds
+          final totalHeight = buttonHeight + 3.0;
           return LayoutBuilder(
             builder: (context, constraints) {
               if (constraints.hasBoundedWidth) {
                 return ClipRect(
                   child: SizedBox(
                     width: constraints.maxWidth,
-                    height: buttonHeight,
+                    height: totalHeight,
                     child: platformView,
                   ),
                 );
@@ -192,7 +195,7 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
                 return ClipRect(
                   child: SizedBox(
                     width: estimatedWidth,
-                    height: buttonHeight,
+                    height: totalHeight,
                     child: platformView,
                   ),
                 );
@@ -203,7 +206,8 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
           final buttonHeight = _getEffectiveMinHeight();
           final estimatedHeight =
               (widget._effectiveButtonCount * buttonHeight) +
-              ((widget._effectiveButtonCount - 1) * widget.spacing);
+              ((widget._effectiveButtonCount - 1) * widget.spacing) +
+              3.0; // Add 3px for badge overflow
           return ClipRect(
             child: LimitedBox(
               maxHeight: estimatedHeight.clamp(44.0, 400.0),
