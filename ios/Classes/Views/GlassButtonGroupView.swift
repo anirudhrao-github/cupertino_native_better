@@ -86,7 +86,7 @@ struct GlassButtonGroupSwiftUI: View {
         .applyContainerFrameModifier(distribution: viewModel.distribution)
       }
     }
-    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+    .applyOuterFrameModifier(distribution: viewModel.distribution)
     .ignoresSafeArea()
   }
 }
@@ -102,14 +102,14 @@ extension View {
       self.frame(maxWidth: .infinity)
     case .natural:
       // Natural sizing: buttons use intrinsic size
-      self
+      self.fixedSize(horizontal: true, vertical: false)
     case .mixed:
       // Mixed: respect individual button's flexible property
       if let flexible = button.config.flexible {
         if flexible {
           self.frame(maxWidth: .infinity)
         } else {
-          self
+          self.fixedSize(horizontal: true, vertical: false)
         }
       } else {
         // If flexible is nil, use natural sizing (text buttons flexible, icon-only fixed)
@@ -117,7 +117,7 @@ extension View {
         if button.title != nil {
           self.frame(maxWidth: .infinity)
         } else {
-          self
+          self.fixedSize(horizontal: true, vertical: false)
         }
       }
     }
@@ -131,6 +131,18 @@ extension View {
       self.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
     case .natural, .mixed:
       // Natural and mixed sizing should not force expansion at container level
+      self.frame(minHeight: 0, maxHeight: .infinity, alignment: .center)
+    }
+  }
+
+  @ViewBuilder
+  func applyOuterFrameModifier(distribution: ButtonDistribution) -> some View {
+    switch distribution {
+    case .equal:
+      // Equal distribution needs the outer container to expand
+      self.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .center)
+    case .natural, .mixed:
+      // Natural and mixed sizing should only constrain height, not width
       self.frame(minHeight: 0, maxHeight: .infinity, alignment: .center)
     }
   }
@@ -427,15 +439,17 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     }
 
     // Update view model with initial values
+    // Set distribution FIRST to ensure it's available during initial layout
+    viewModel.distribution = distribution
     viewModel.buttons = buttons
     viewModel.axis = axis
     viewModel.spacing = spacing
     viewModel.spacingForGlass = spacingForGlass
-    viewModel.distribution = distribution
-    
+
     let swiftUIView = GlassButtonGroupSwiftUI(viewModel: viewModel)
-    
+
     self.hostingController = UIHostingController(rootView: swiftUIView)
+
     self.hostingController.view.backgroundColor = .clear
     // Configure hosting controller to ignore safe areas and remove any padding
     if #available(iOS 11.0, *) {
@@ -467,7 +481,11 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
       hostingController.view.topAnchor.constraint(equalTo: container.topAnchor, constant: 3),
       hostingController.view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 0),
     ])
-    
+
+    // Force immediate layout to ensure SwiftUI view calculates sizes correctly on first render
+    hostingController.view.setNeedsLayout()
+    hostingController.view.layoutIfNeeded()
+
     // Store axis and spacing for badge positioning
     self.axis = axis
     self.spacing = spacing
@@ -475,6 +493,15 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     // Observe frame changes to force layout updates
     container.addObserver(self, forKeyPath: "frame", options: [.new, .old], context: nil)
     container.addObserver(self, forKeyPath: "bounds", options: [.new, .old], context: nil)
+
+    // Force SwiftUI to recalculate layout by triggering a state update in the next run loop
+    // This ensures the distribution mode is properly applied on initial render
+    DispatchQueue.main.async { [weak viewModel] in
+      guard let vm = viewModel else { return }
+      // Reassign to trigger SwiftUI's layout recalculation
+      let currentDistribution = vm.distribution
+      vm.distribution = currentDistribution
+    }
 
     // Create and add UIKit badge views
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
