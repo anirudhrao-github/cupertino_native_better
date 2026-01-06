@@ -94,6 +94,13 @@ class CNButtonConfig {
   /// on its content (text buttons are flexible, icon-only buttons are fixed).
   final bool? flexible;
 
+  /// Size for custom icons (when using [customIcon]).
+  ///
+  /// If null, defaults to 20.0 points.
+  /// This only affects custom icons from IconData (CupertinoIcons, Icons, etc.).
+  /// For SF Symbols, use [CNSymbol.size]. For image assets, use [CNImageAsset.size].
+  final double? customIconSize;
+
   /// Creates a configuration for [CNButton].
   const CNButtonConfig({
     this.padding,
@@ -109,6 +116,7 @@ class CNButtonConfig {
     this.glassEffectInteractive = true,
     this.maxLines = 1,
     this.flexible,
+    this.customIconSize,
   });
 }
 
@@ -301,10 +309,11 @@ class _CNButtonState extends State<CNButton> {
 
     // Handle custom icon (medium priority)
     if (widget.customIcon != null) {
+      final customIconSize = widget.config.customIconSize ?? 20.0;
       return FutureBuilder<Uint8List?>(
         future: iconDataToImageBytes(
           widget.customIcon!,
-          size: widget.icon?.size ?? 20.0,
+          size: customIconSize,
         ),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -358,7 +367,7 @@ class _CNButtonState extends State<CNButton> {
       // Custom icon bytes
       imageData = customIconBytes;
       imageFormat = 'png'; // IconData is rendered as PNG
-      iconSize = widget.icon?.size ?? 20.0;
+      iconSize = widget.config.customIconSize ?? 20.0;
       iconColor = widget.icon?.color;
       iconMode = widget.icon?.mode;
       iconGradient = widget.icon?.gradient;
@@ -491,7 +500,7 @@ class _CNButtonState extends State<CNButton> {
           } else if (widget.icon != null) {
             iconSize = widget.icon!.size;
           } else if (widget.customIcon != null) {
-            iconSize = widget.icon?.size ?? 20.0;
+            iconSize = widget.config.customIconSize ?? 20.0;
           }
           // Calculate circular size: icon size + padding on all sides
           // Use a padding of iconSize * 0.5 on each side for a nice circular appearance
@@ -775,13 +784,14 @@ class _CNButtonState extends State<CNButton> {
         // Handle custom icon - update if changed OR if we switched from another icon type
         if (customIconChanged || iconTypeChanged) {
           // Handle custom icon change - need to render it first
+          final customIconSize = widget.config.customIconSize ?? 20.0;
           final customIconBytes = await iconDataToImageBytes(
             widget.customIcon!,
-            size: widget.icon?.size ?? 20.0,
+            size: customIconSize,
           );
           if (customIconBytes != null) {
             updates['buttonCustomIconBytes'] = customIconBytes;
-            updates['buttonIconSize'] = widget.icon?.size ?? 20.0;
+            updates['buttonIconSize'] = customIconSize;
             if (widget.icon?.color != null) {
               if (mounted) {
                 updates['buttonIconColor'] = resolveColorToArgb(
@@ -904,7 +914,10 @@ class _CNButtonState extends State<CNButton> {
         size: widget.imageAsset!.size,
       );
     } else if (widget.customIcon != null) {
-      iconWidget = Icon(widget.customIcon, size: widget.icon?.size ?? 20.0);
+      iconWidget = Icon(
+        widget.customIcon,
+        size: widget.config.customIconSize ?? 20.0,
+      );
     } else if (widget.icon != null) {
       // Use CNIcon to properly render SF Symbols (instead of placeholder)
       iconWidget = CNIcon(
@@ -1020,7 +1033,7 @@ class _CNButtonState extends State<CNButton> {
       } else if (widget.icon != null) {
         iconSize = widget.icon!.size;
       } else if (widget.customIcon != null) {
-        iconSize = widget.icon?.size ?? 20.0;
+        iconSize = widget.config.customIconSize ?? 20.0;
       }
       // Calculate circular size: icon size + padding on all sides
       // Ensure minimum size of 44 points per Apple HIG
@@ -1083,7 +1096,10 @@ class _CNButtonState extends State<CNButton> {
         size: widget.imageAsset!.size,
       );
     } else if (widget.customIcon != null) {
-      iconWidget = Icon(widget.customIcon, size: widget.icon?.size ?? 20.0);
+      iconWidget = Icon(
+        widget.customIcon,
+        size: widget.config.customIconSize ?? 20.0,
+      );
     } else if (widget.icon != null) {
       // Use CNIcon for SF Symbols
       iconWidget = CNIcon(
@@ -1200,7 +1216,7 @@ class _CNButtonState extends State<CNButton> {
       } else if (widget.icon != null) {
         iconSize = widget.icon!.size;
       } else if (widget.customIcon != null) {
-        iconSize = widget.icon?.size ?? 20.0;
+        iconSize = widget.config.customIconSize ?? 20.0;
       }
       // Calculate circular size: icon size + padding on all sides
       // Ensure minimum size of 44 points per Apple HIG
