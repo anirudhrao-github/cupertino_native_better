@@ -1,3 +1,25 @@
+## 1.3.3
+
+### New Features
+
+- **Added**: `customIconSize` property for `CNButtonConfig` and `CNButtonDataConfig` (PR #12 by @anirudhrao-github)
+  - Allows customizing the size of custom icons (IconData) in buttons
+  - Previously hardcoded to 20.0 points, now configurable
+
+### Bug Fixes
+
+- **Fixed**: `CNGlassButtonGroup` no longer forces equal width on all buttons (PR #12 by @anirudhrao-github)
+  - Buttons now use their intrinsic width based on content
+  - Label buttons can now be wider than icon-only buttons in the same group
+  - Uses SwiftUI `.fixedSize(horizontal: true, vertical: false)` for proper sizing
+
+### Improvements
+
+- **Improved**: Initial layout rendering for `CNGlassButtonGroup`
+  - Added immediate layout pass after view creation for correct first render
+
+---
+
 ## 1.3.2
 
 ### New Features

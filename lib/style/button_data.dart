@@ -145,6 +145,7 @@ class CNButtonDataConfig {
     this.glassEffectUnionId,
     this.glassEffectId,
     this.glassEffectInteractive = true,
+    this.customIconSize,
   });
 
   /// Fixed width for the button.
@@ -177,6 +178,12 @@ class CNButtonDataConfig {
   /// Whether the glass effect responds to touches.
   final bool glassEffectInteractive;
 
+  /// Size for custom icons (when using [customIcon]).
+  ///
+  /// If null, defaults to 20.0 points.
+  /// This only affects custom icons from IconData (CupertinoIcons, Icons, etc.).
+  final double? customIconSize;
+
   /// Creates a copy with the given fields replaced.
   CNButtonDataConfig copyWith({
     double? width,
@@ -189,6 +196,7 @@ class CNButtonDataConfig {
     String? glassEffectUnionId,
     String? glassEffectId,
     bool? glassEffectInteractive,
+    double? customIconSize,
   }) {
     return CNButtonDataConfig(
       width: width ?? this.width,
@@ -202,6 +210,7 @@ class CNButtonDataConfig {
       glassEffectId: glassEffectId ?? this.glassEffectId,
       glassEffectInteractive:
           glassEffectInteractive ?? this.glassEffectInteractive,
+      customIconSize: customIconSize ?? this.customIconSize,
     );
   }
 }
