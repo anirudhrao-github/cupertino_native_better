@@ -10,6 +10,7 @@ struct GlassButtonSwiftUI: View {
   let iconImage: UIImage?
   let iconSize: CGFloat
   let iconColor: Color?
+  let disabledIconColor: Color?
   let tint: Color?
   let isRound: Bool
   let style: String
@@ -22,6 +23,14 @@ struct GlassButtonSwiftUI: View {
   let config: GlassButtonConfig
   let badgeCount: Int?
   
+  /// Computes the effective icon color based on enabled state
+  private var effectiveIconColor: Color? {
+    if !isEnabled, let disabledColor = disabledIconColor {
+      return disabledColor
+    }
+    return tint ?? iconColor
+  }
+
   var body: some View {
     Button(action: onPressed) {
       HStack(spacing: config.spacing) {
@@ -31,11 +40,11 @@ struct GlassButtonSwiftUI: View {
             .resizable()
             .scaledToFit()
             .frame(width: iconSize, height: iconSize)
-            .foregroundColor(tint != nil ? Color(tint!) : (iconColor != nil ? Color(iconColor!) : nil))
+            .foregroundColor(effectiveIconColor)
         } else if let iconName = iconName {
           Image(systemName: iconName)
             .font(.system(size: iconSize))
-            .foregroundColor(iconColor != nil ? Color(iconColor!) : nil)
+            .foregroundColor(effectiveIconColor)
         }
 
         if let title = title {
@@ -57,7 +66,10 @@ struct GlassButtonSwiftUI: View {
       .animation(.easeInOut(duration: 0.25), value: config.minHeight)
       .animation(.easeInOut(duration: 0.25), value: config.borderRadius)
     }
-    .disabled(!isEnabled)
+    // Only apply system disabled styling if no custom disabledIconColor is provided
+    // When disabledIconColor is set, we handle the visual state ourselves
+    .disabled(!isEnabled && disabledIconColor == nil)
+    .allowsHitTesting(isEnabled) // Prevent taps when disabled regardless of styling
     .buttonStyle(NoHighlightButtonStyle())
     .badge(badgeCount != nil && badgeCount! > 0 ? (badgeCount! > 99 ? "99+" : "\(badgeCount!)") : nil)
   }

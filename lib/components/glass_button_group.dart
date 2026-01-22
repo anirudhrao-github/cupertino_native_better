@@ -522,6 +522,9 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
         'assetPath': resolvedAssetPath ?? button.imageAsset!.assetPath,
       'enabled': button.enabled,
       if (tintArgb != null) 'tint': tintArgb,
+      if (button.disabledIconColor != null)
+        'disabledIconColor':
+            resolveColorToArgb(button.disabledIconColor, context),
       if (button.badgeCount != null) 'badgeCount': button.badgeCount,
       'minHeight': button.config.minHeight ?? 44.0,
       'style': button.config.style.name,
@@ -603,6 +606,9 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
         'assetPath': resolvedAssetPath ?? button.imageAsset!.assetPath,
       'enabled': button.enabled,
       if (tintArgb != null) 'tint': tintArgb,
+      if (button.config.disabledIconColor != null)
+        'disabledIconColor':
+            resolveColorToArgb(button.config.disabledIconColor, context),
       if (button.badgeCount != null) 'badgeCount': button.badgeCount,
       'minHeight': button.config.minHeight ?? 44.0,
       'style': button.config.style.name,
@@ -650,6 +656,7 @@ class _ButtonSnapshot {
   final String style;
   final bool enabled;
   final int? tint;
+  final int? disabledIconColor;
   final int? badgeCount;
 
   _ButtonSnapshot({
@@ -665,6 +672,7 @@ class _ButtonSnapshot {
     required this.style,
     required this.enabled,
     this.tint,
+    this.disabledIconColor,
     this.badgeCount,
   });
 
@@ -682,6 +690,7 @@ class _ButtonSnapshot {
       style: button.config.style.name,
       enabled: button.enabled,
       tint: button.tint?.toARGB32(),
+      disabledIconColor: button.config.disabledIconColor?.toARGB32(),
       badgeCount: button.badgeCount,
     );
   }
@@ -700,6 +709,7 @@ class _ButtonSnapshot {
       style: button.config.style.name,
       enabled: button.enabled,
       tint: button.tint?.toARGB32(),
+      disabledIconColor: button.disabledIconColor?.toARGB32(),
       badgeCount: button.badgeCount,
     );
   }
@@ -717,6 +727,7 @@ class _ButtonSnapshot {
         style == other.style &&
         enabled == other.enabled &&
         tint == other.tint &&
+        disabledIconColor == other.disabledIconColor &&
         badgeCount == other.badgeCount;
   }
 }

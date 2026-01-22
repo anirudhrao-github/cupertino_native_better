@@ -49,6 +49,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
     var glassEffectId: String? = nil
     var glassEffectInteractive: Bool = false
     var badgeCount: Int? = nil
+    var disabledIconColor: UIColor? = nil
 
     if let dict = args as? [String: Any] {
       if let t = dict["buttonTitle"] as? String { title = t }
@@ -87,6 +88,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
       if let geId = dict["glassEffectId"] as? String { glassEffectId = geId }
       if let geInteractive = dict["glassEffectInteractive"] as? NSNumber { glassEffectInteractive = geInteractive.boolValue }
       if let bc = dict["badgeCount"] as? NSNumber { badgeCount = bc.intValue }
+      if let dic = dict["disabledIconColor"] as? NSNumber { disabledIconColor = Self.colorFromARGB(dic.intValue) }
     }
 
     super.init()
@@ -193,6 +195,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
         iconImage: finalImage,
         iconSize: iconSize ?? 20,
         iconColor: iconColor,
+        disabledIconColor: disabledIconColor,
         tint: tint,
         isRound: makeRound,
         style: buttonStyle,
@@ -527,6 +530,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
     iconImage: UIImage?,
     iconSize: CGFloat,
     iconColor: UIColor?,
+    disabledIconColor: UIColor?,
     tint: UIColor?,
     isRound: Bool,
     style: String,
@@ -567,6 +571,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
       let iconImage: UIImage?
       let iconSize: CGFloat
       let iconColor: Color?
+      let disabledIconColor: Color?
       let tint: Color?
       let isRound: Bool
       let style: String
@@ -585,6 +590,7 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
           iconImage: iconImage,
           iconSize: iconSize,
           iconColor: iconColor,
+          disabledIconColor: disabledIconColor,
           tint: tint,
           isRound: isRound,
           style: style,
@@ -599,13 +605,14 @@ class CupertinoButtonPlatformView: NSObject, FlutterPlatformView {
         )
       }
     }
-    
+
     let swiftUIButton = ButtonWrapperView(
       title: title,
       iconName: iconName,
       iconImage: iconImage,
       iconSize: iconSize,
       iconColor: iconColor != nil ? Color(iconColor!) : nil,
+      disabledIconColor: disabledIconColor != nil ? Color(disabledIconColor!) : nil,
       tint: tint != nil ? Color(tint!) : nil,
       isRound: isRound,
       style: style,

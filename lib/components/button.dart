@@ -89,6 +89,12 @@ class CNButtonConfig {
   /// For SF Symbols, use [CNSymbol.size]. For image assets, use [CNImageAsset.size].
   final double? customIconSize;
 
+  /// Icon color when the button is disabled.
+  ///
+  /// If null, the system default disabled appearance is used.
+  /// This allows customizing the icon color for disabled buttons.
+  final Color? disabledIconColor;
+
   /// Creates a configuration for [CNButton].
   const CNButtonConfig({
     this.padding,
@@ -104,6 +110,7 @@ class CNButtonConfig {
     this.glassEffectInteractive = true,
     this.maxLines = 1,
     this.customIconSize,
+    this.disabledIconColor,
   });
 }
 
@@ -437,6 +444,9 @@ class _CNButtonState extends State<CNButton> {
         'glassEffectId': widget.config.glassEffectId,
       'glassEffectInteractive': widget.config.glassEffectInteractive,
       if (widget.badgeCount != null) 'badgeCount': widget.badgeCount,
+      if (widget.config.disabledIconColor != null)
+        'disabledIconColor':
+            resolveColorToArgb(widget.config.disabledIconColor, context),
     };
 
     final platformView = defaultTargetPlatform == TargetPlatform.iOS
