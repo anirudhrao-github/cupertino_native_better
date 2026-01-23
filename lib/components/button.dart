@@ -537,12 +537,14 @@ class _CNButtonState extends State<CNButton> {
                 _intrinsicHeight != null)
             ? _intrinsicHeight!
             : defaultHeight;
-        return Listener(
+        final buttonWidget = Listener(
           onPointerDown: (e) {
+            if (!widget.config.interaction) return;
             _downPosition = e.position;
             _setPressed(true);
           },
           onPointerMove: (e) {
+            if (!widget.config.interaction) return;
             final start = _downPosition;
             if (start != null && _pressed) {
               final moved = (e.position - start).distance;
@@ -552,10 +554,12 @@ class _CNButtonState extends State<CNButton> {
             }
           },
           onPointerUp: (_) {
+            if (!widget.config.interaction) return;
             _setPressed(false);
             _downPosition = null;
           },
           onPointerCancel: (_) {
+            if (!widget.config.interaction) return;
             _setPressed(false);
             _downPosition = null;
           },
@@ -563,6 +567,16 @@ class _CNButtonState extends State<CNButton> {
             child: SizedBox(height: height, width: width, child: platformView),
           ),
         );
+
+        // Wrap in IgnorePointer when interaction is disabled to absorb all touches
+        if (!widget.config.interaction) {
+          return IgnorePointer(
+            ignoring: true,
+            child: buttonWidget,
+          );
+        }
+
+        return buttonWidget;
       },
     );
   }
@@ -600,7 +614,7 @@ class _CNButtonState extends State<CNButton> {
   Future<dynamic> _onMethodCall(MethodCall call) async {
     switch (call.method) {
       case 'pressed':
-        if (widget.enabled && widget.onPressed != null) {
+        if (widget.enabled && widget.config.interaction && widget.onPressed != null) {
           widget.onPressed!();
         }
         break;
@@ -1074,22 +1088,28 @@ class _CNButtonState extends State<CNButton> {
         borderRadius: BorderRadius.circular(borderRadius),
         pressedOpacity: 0.4, // Explicit press feedback
         color: _getCupertinoButtonColor(context),
-        onPressed: (widget.enabled && widget.onPressed != null)
+        onPressed: (widget.enabled && widget.config.interaction && widget.onPressed != null)
             ? widget.onPressed
             : null,
         child: child,
       ),
     );
 
+    // Wrap in IgnorePointer when interaction is disabled
+    Widget result = button;
+    if (!widget.config.interaction) {
+      result = IgnorePointer(ignoring: true, child: button);
+    }
+
     // Add badge if badgeCount is provided
     if (widget.badgeCount != null && widget.badgeCount! > 0) {
       return Stack(
         clipBehavior: Clip.none,
-        children: [button, _buildBadge(widget.badgeCount!)],
+        children: [result, _buildBadge(widget.badgeCount!)],
       );
     }
 
-    return button;
+    return result;
   }
 
   Widget _buildMaterialFallback(BuildContext context) {
@@ -1245,7 +1265,7 @@ class _CNButtonState extends State<CNButton> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: (widget.enabled && widget.onPressed != null)
+          onTap: (widget.enabled && widget.config.interaction && widget.onPressed != null)
               ? widget.onPressed
               : null,
           borderRadius: BorderRadius.circular(defaultHeight / 2),
@@ -1264,15 +1284,21 @@ class _CNButtonState extends State<CNButton> {
       ),
     );
 
+    // Wrap in IgnorePointer when interaction is disabled
+    Widget result = button;
+    if (!widget.config.interaction) {
+      result = IgnorePointer(ignoring: true, child: button);
+    }
+
     // Add badge if badgeCount is provided
     if (widget.badgeCount != null && widget.badgeCount! > 0) {
       return Stack(
         clipBehavior: Clip.none,
-        children: [button, _buildBadge(widget.badgeCount!)],
+        children: [result, _buildBadge(widget.badgeCount!)],
       );
     }
 
-    return button;
+    return result;
   }
 
   Color? _getCupertinoButtonColor(BuildContext context) {
