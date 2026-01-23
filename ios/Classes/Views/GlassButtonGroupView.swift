@@ -36,7 +36,6 @@ struct GlassButtonGroupSwiftUI: View {
               iconImage: button.iconImage,
               iconSize: button.iconSize,
               iconColor: button.iconColor,
-              disabledIconColor: button.disabledIconColor,
               tint: button.tint,
               isRound: button.isRound,
               style: button.style,
@@ -63,7 +62,6 @@ struct GlassButtonGroupSwiftUI: View {
               iconImage: button.iconImage,
               iconSize: button.iconSize,
               iconColor: button.iconColor,
-              disabledIconColor: button.disabledIconColor,
               tint: button.tint,
               isRound: button.isRound,
               style: button.style,
@@ -180,7 +178,6 @@ struct GlassButtonData: Identifiable {
   let iconImage: UIImage?
   let iconSize: CGFloat
   let iconColor: Color?
-  let disabledIconColor: Color?
   let tint: Color?
   let isRound: Bool
   let style: String
@@ -247,7 +244,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
           let iconSize = (buttonDict["iconSize"] as? NSNumber).map { CGFloat(truncating: $0) } ?? 20.0
           let iconColorARGB = (buttonDict["iconColor"] as? NSNumber)?.intValue
           let iconColor = iconColorARGB.map { Color(uiColor: Self.colorFromARGB($0)) }
-          let disabledIconColor = (buttonDict["disabledIconColor"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
           let tint = (buttonDict["tint"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
           let isEnabled = (buttonDict["enabled"] as? NSNumber)?.boolValue ?? true
           let isInteractive = (buttonDict["interaction"] as? NSNumber)?.boolValue ?? true
@@ -350,7 +346,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
             iconImage: iconImage,
             iconSize: iconSize,
             iconColor: iconColor,
-            disabledIconColor: disabledIconColor,
             tint: tint,
             isRound: isRound,
             style: style,
@@ -479,7 +474,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
     let iconSize = (buttonDict["iconSize"] as? NSNumber).map { CGFloat(truncating: $0) } ?? 20.0
     let iconColorARGB = (buttonDict["iconColor"] as? NSNumber)?.intValue
     let iconColor = iconColorARGB.map { Color(uiColor: Self.colorFromARGB($0)) }
-    let disabledIconColor = (buttonDict["disabledIconColor"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
     let tint = (buttonDict["tint"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
     let isEnabled = (buttonDict["enabled"] as? NSNumber)?.boolValue ?? true
     let isInteractive = (buttonDict["interaction"] as? NSNumber)?.boolValue ?? true
@@ -573,7 +567,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
       iconImage: iconImage,
       iconSize: iconSize,
       iconColor: iconColor,
-      disabledIconColor: disabledIconColor,
       tint: tint,
       isRound: isRound,
       style: style,
@@ -597,14 +590,13 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
 
   private func updateButtons(_ buttonsData: [[String: Any]]) {
     var newButtons: [GlassButtonData] = []
-    
+
     for (index, buttonDict) in buttonsData.enumerated() {
       let title = buttonDict["label"] as? String
       let iconName = buttonDict["iconName"] as? String
       let iconSize = (buttonDict["iconSize"] as? NSNumber).map { CGFloat(truncating: $0) } ?? 20.0
       let iconColorARGB = (buttonDict["iconColor"] as? NSNumber)?.intValue
       let iconColor = iconColorARGB.map { Color(uiColor: Self.colorFromARGB($0)) }
-      let disabledIconColor = (buttonDict["disabledIconColor"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
       let tint = (buttonDict["tint"] as? NSNumber).map { Color(uiColor: Self.colorFromARGB($0.intValue)) }
       let isEnabled = (buttonDict["enabled"] as? NSNumber)?.boolValue ?? true
       let isInteractive = (buttonDict["interaction"] as? NSNumber)?.boolValue ?? true
@@ -695,7 +687,6 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
         iconImage: iconImage,
         iconSize: iconSize,
         iconColor: iconColor,
-        disabledIconColor: disabledIconColor,
         tint: tint,
         isRound: isRound,
         style: style,
@@ -710,7 +701,7 @@ class GlassButtonGroupPlatformView: NSObject, FlutterPlatformView {
       )
       newButtons.append(buttonData)
     }
-    
+
     viewModel.updateButtons(newButtons)
 
     // Update badges after buttons update

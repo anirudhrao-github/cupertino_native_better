@@ -10,7 +10,6 @@ struct GlassButtonSwiftUI: View {
   let iconImage: UIImage?
   let iconSize: CGFloat
   let iconColor: Color?
-  let disabledIconColor: Color?
   let tint: Color?
   let isRound: Bool
   let style: String
@@ -23,12 +22,9 @@ struct GlassButtonSwiftUI: View {
   var namespace: Namespace.ID
   let config: GlassButtonConfig
   let badgeCount: Int?
-  
-  /// Computes the effective icon color based on enabled state
+
+  /// Computes the effective icon color
   private var effectiveIconColor: Color? {
-    if !isEnabled, let disabledColor = disabledIconColor {
-      return disabledColor
-    }
     return tint ?? iconColor
   }
 
@@ -67,8 +63,6 @@ struct GlassButtonSwiftUI: View {
       .animation(.easeInOut(duration: 0.25), value: config.minHeight)
       .animation(.easeInOut(duration: 0.25), value: config.borderRadius)
     }
-    // Only apply system disabled styling if no custom disabledIconColor is provided
-    // When disabledIconColor is set, we handle the visual state ourselves
     .disabled(!isEnabled)
     .buttonStyle(NoHighlightButtonStyle())
     .badge(badgeCount != nil && badgeCount! > 0 ? (badgeCount! > 99 ? "99+" : "\(badgeCount!)") : nil)

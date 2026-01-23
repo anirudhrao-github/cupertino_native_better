@@ -526,9 +526,6 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
         'assetPath': resolvedAssetPath ?? button.imageAsset!.assetPath,
       'enabled': button.enabled,
       if (tintArgb != null) 'tint': tintArgb,
-      if (button.disabledIconColor != null)
-        'disabledIconColor':
-            resolveColorToArgb(button.disabledIconColor, context),
       if (button.badgeCount != null) 'badgeCount': button.badgeCount,
       'minHeight': button.config.minHeight ?? 44.0,
       'style': button.config.style.name,
@@ -611,9 +608,6 @@ class _CNGlassButtonGroupState extends State<CNGlassButtonGroup> {
         'assetPath': resolvedAssetPath ?? button.imageAsset!.assetPath,
       'enabled': button.enabled,
       if (tintArgb != null) 'tint': tintArgb,
-      if (button.config.disabledIconColor != null)
-        'disabledIconColor':
-            resolveColorToArgb(button.config.disabledIconColor, context),
       if (button.badgeCount != null) 'badgeCount': button.badgeCount,
       'minHeight': button.config.minHeight ?? 44.0,
       'style': button.config.style.name,
@@ -663,7 +657,6 @@ class _ButtonSnapshot {
   final bool enabled;
   final bool interaction;
   final int? tint;
-  final int? disabledIconColor;
   final int? badgeCount;
 
   _ButtonSnapshot({
@@ -680,7 +673,6 @@ class _ButtonSnapshot {
     required this.enabled,
     required this.interaction,
     this.tint,
-    this.disabledIconColor,
     this.badgeCount,
   });
 
@@ -699,7 +691,6 @@ class _ButtonSnapshot {
       enabled: button.enabled,
       interaction: button.config.interaction,
       tint: button.tint?.toARGB32(),
-      disabledIconColor: button.config.disabledIconColor?.toARGB32(),
       badgeCount: button.badgeCount,
     );
   }
@@ -719,7 +710,6 @@ class _ButtonSnapshot {
       enabled: button.enabled,
       interaction: button.config.interaction,
       tint: button.tint?.toARGB32(),
-      disabledIconColor: button.disabledIconColor?.toARGB32(),
       badgeCount: button.badgeCount,
     );
   }
@@ -738,7 +728,6 @@ class _ButtonSnapshot {
         enabled == other.enabled &&
         interaction == other.interaction &&
         tint == other.tint &&
-        disabledIconColor == other.disabledIconColor &&
         badgeCount == other.badgeCount;
   }
 }
